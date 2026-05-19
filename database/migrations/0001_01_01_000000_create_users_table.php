@@ -1,0 +1,67 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+
+    public function up(): void
+    {
+        Schema::create('users', function (Blueprint $table) {
+            $table->id();
+            $table->string('name', 100)->comment('Никнейм пользователя');
+            $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
+
+            // Профильная информация
+            // ВАЖНО: аватар хранится через spatie/laravel-medialibrary,
+            // отдельное поле avatar НЕ нужно — используется коллекция 'avatar'
+            $table->text('bio')->nullable()->comment('Биография пользователя');
+            $table->string('region', 100)->nullable()->comment('Регион проживания');
+
+            // Рейтинговая система — суммарная репутация на основе голосов за посты
+            $table->integer('rating')->default(0)->comment('Репутация пользователя');
+
+            // ПРИМЕЧАНИЕ: роли управляются пакетом spatie/laravel-permission
+            // через таблицу model_has_roles (создаётся автоматически)
+
+            // Защита от спама/брутфорса логина
+            $table->unsignedInteger('login_attempts')->default(0);
+            $table->timestamp('locked_until')->nullable();
+            $table->timestamp('last_login_at')->nullable();
+            $table->string('last_login_ip', 45)->nullable();
+
+            $table->rememberToken();
+            $table->timestamps();
+
+            // Индексы
+            $table->index('rating');
+            $table->index('region');
+        });
+
+        Schema::create('password_reset_tokens', function (Blueprint $table) {
+            $table->string('email')->primary();
+            $table->string('token');
+            $table->timestamp('created_at')->nullable();
+        });
+
+        Schema::create('sessions', function (Blueprint $table) {
+            $table->string('id')->primary();
+            $table->foreignId('user_id')->nullable()->index();
+            $table->string('ip_address', 45)->nullable();
+            $table->text('user_agent')->nullable();
+            $table->longText('payload');
+            $table->integer('last_activity')->index();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('sessions');
+        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('users');
+    }
+};
