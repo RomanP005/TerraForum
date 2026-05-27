@@ -11,9 +11,6 @@ use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
-    /**
-     * Создать ответ в теме.
-     */
     public function store(CreatePostRequest $request, string $slug): RedirectResponse
     {
         $theme = Theme::where('slug', $slug)->firstOrFail();
@@ -25,23 +22,23 @@ class PostController extends Controller
             'user_id' => auth()->id(),
         ]);
 
-        // Прикрепить фото если есть
+
         if ($request->hasFile('attachments')) {
             foreach ($request->file('attachments') as $file) {
                 $post->addMedia($file)->toMediaCollection('attachments');
             }
         }
 
-        // Обновить счётчик ответов и время активности темы
+
         $theme->increment('comments_count');
         $theme->update(['last_activity_at' => now()]);
 
-        // Уведомить автора темы (если это не он сам отвечает)
+
         if ($theme->user_id !== auth()->id()) {
             try {
                 $theme->user->notify(new ReplyToTheme($theme, $post->load('user')));
             } catch (\Exception $e) {
-                // Если уведомление не отправилось — не падаем
+
             }
         }
 
@@ -50,10 +47,6 @@ class PostController extends Controller
             ->with('success', 'Ответ опубликован');
     }
 
-    /**
-     * Голосование за ответ.
-     * При повторном нажатии того же голоса — отмена (возврат к 0).
-     */
     public function vote(Post $post): RedirectResponse
     {
         $user  = auth()->user();
@@ -90,9 +83,6 @@ class PostController extends Controller
         return back();
     }
 
-    /**
-     * Отметить ответ как лучший.
-     */
     public function markBestAnswer(Post $post): RedirectResponse
     {
         $theme = $post->theme;
