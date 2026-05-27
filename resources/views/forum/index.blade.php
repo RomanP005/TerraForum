@@ -1,140 +1,133 @@
 @extends('layouts.app')
-
 @section('title', 'Форум')
 @section('mode', 'earth')
-
 @section('content')
 
-    <section class="py-12 px-6" style="background: var(--bg-section-alt);">
-        <div class="workspace text-center reveal">
-            <div class="divider mb-4"><span>обсуждения</span></div>
-            <h1 class="text-5xl md:text-6xl mb-3" style="line-height: 1.1;">Форум</h1>
-            <p class="text-base text-secondary-c max-w-xl mx-auto">
+    {{-- Заголовок --}}
+    <section style="background: var(--bg-section-alt); padding: 48px 0 32px;">
+        <div class="workspace" style="text-align: center;" class="reveal">
+            <div class="divider" style="margin-bottom: 16px;"><span>обсуждения</span></div>
+            <h1 style="font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.1; margin-bottom: 12px;">Форум</h1>
+            <p class="text-secondary-c" style="max-width: 480px; margin: 0 auto; font-size: 15px;">
                 Задавайте вопросы, делитесь опытом, находите ответы.
             </p>
         </div>
     </section>
 
-    <section class="px-6 -mt-6 mb-8 relative z-10">
+    {{-- Поиск --}}
+    <section style="padding: 0 0 24px; position: relative; z-index: 10; margin-top: -20px;">
         <div class="workspace">
-            <div class="card-flat p-5 reveal">
-                <form action="{{ route('forum.index') }}" method="GET" class="flex flex-col md:flex-row gap-3">
+            <div class="card-flat" style="padding: 20px;">
+                <form action="{{ route('forum.index') }}" method="GET"
+                      style="display: flex; flex-wrap: wrap; gap: 10px;">
                     @if($categorySlug)<input type="hidden" name="category" value="{{ $categorySlug }}">@endif
                     @if($sort && $sort !== 'latest')<input type="hidden" name="sort" value="{{ $sort }}">@endif
                     @foreach($selectedTags as $tag)<input type="hidden" name="tags[]" value="{{ $tag }}">@endforeach
 
                     <input type="search" name="q" value="{{ $search }}"
                            placeholder="Поиск по темам и сообщениям..."
-                           class="input-field flex-1 px-4 py-3 text-sm">
+                           class="input-field px-4 py-3"
+                           style="flex: 1 1 200px; font-size: 14px;">
 
-                    <button type="submit" class="btn btn-filled">Найти</button>
-
-                    @auth @can('create themes')
-                        <button type="button" onclick="openModal('create-theme-modal')" class="btn btn-ghost">
-                            Создать тему
-                        </button>
-                    @endcan @endauth
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <button type="submit" class="btn btn-filled">Найти</button>
+                        @auth @can('create themes')
+                            <button type="button" onclick="openModal('create-theme-modal')" class="btn btn-ghost">
+                                Создать тему
+                            </button>
+                        @endcan @endauth
+                    </div>
                 </form>
 
                 @if($search || $categorySlug || $selectedTags->isNotEmpty())
-                    <div class="mt-3 flex flex-wrap items-center gap-2 text-xs">
-                        <span class="uppercase tracking-widest text-muted-c" style="letter-spacing: 2px;">Фильтры:</span>
+                    <div style="margin-top: 12px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 12px;">
+                        <span class="text-muted-c" style="font-size: 11px; letter-spacing: 2px; text-transform: uppercase;">Фильтры:</span>
                         @if($search)
-                            <span class="badge badge-soft inline-flex items-center gap-2">
-                            «{{ $search }}»
-                            <a href="{{ request()->fullUrlWithoutQuery('q') }}" class="text-brown">×</a>
+                            <span class="badge badge-soft" style="display: inline-flex; align-items: center; gap: 6px;">
+                            «{{ $search }}» <a href="{{ request()->fullUrlWithoutQuery('q') }}" class="text-brown">×</a>
                         </span>
                         @endif
                         @if($categorySlug)
-                            <span class="badge badge-soft inline-flex items-center gap-2">
+                            <span class="badge badge-soft" style="display: inline-flex; align-items: center; gap: 6px;">
                             {{ \App\Models\Category::where('slug', $categorySlug)->value('name') }}
                             <a href="{{ request()->fullUrlWithoutQuery('category') }}" class="text-brown">×</a>
                         </span>
                         @endif
                         @foreach($selectedTags as $tag)
-                            <span class="badge badge-soft inline-flex items-center gap-2">
-                            #{{ $tag }}
-                            <a href="{{ request()->fullUrlWithoutQuery('tags') }}" class="text-brown">×</a>
+                            <span class="badge badge-soft" style="display: inline-flex; align-items: center; gap: 6px;">
+                            #{{ $tag }} <a href="{{ request()->fullUrlWithoutQuery('tags') }}" class="text-brown">×</a>
                         </span>
                         @endforeach
-                        <a href="{{ route('forum.index') }}" class="text-brown hover:underline uppercase tracking-widest ml-2 text-xs" style="letter-spacing: 2px;">
-                            Сбросить
-                        </a>
+                        <a href="{{ route('forum.index') }}" class="text-brown" style="font-size: 11px; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; margin-left: 4px;">Сбросить</a>
                     </div>
                 @endif
             </div>
         </div>
     </section>
 
-    <section class="px-6">
+    {{-- Список тем --}}
+    <section style="padding-bottom: 48px;">
         <div class="workspace">
 
-            <div class="flex items-center justify-between mb-6">
-                <div class="flex items-center gap-1 text-xs uppercase tracking-widest" style="letter-spacing: 2px;">
-                    <span class="text-muted-c mr-2">Сортировать:</span>
-                    @php $sortOptions = ['latest' => 'Новые', 'popular' => 'Популярные', 'active' => 'Активные']; @endphp
-                    @foreach($sortOptions as $key => $label)
-                        <a href="{{ request()->fullUrlWithQuery(['sort' => $key]) }}"
-                           class="px-3 py-1.5 rounded-md transition-all
-                              {{ $sort === $key ? 'text-cream' : 'text-secondary-c hover:text-cream' }}"
-                           style="{{ $sort === $key ? 'background: linear-gradient(135deg, var(--brown-bright), var(--brown));' : '' }}">
-                            {{ $label }}
-                        </a>
-                    @endforeach
-                </div>
-                <div class="text-xs text-muted-c uppercase tracking-widest" style="letter-spacing: 2px;">
-                    Найдено: {{ $themes->total() }}
-                </div>
+            {{-- Сортировка --}}
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 20px;">
+                <span class="text-muted-c" style="font-size: 11px; letter-spacing: 2px; text-transform: uppercase;">Сортировать:</span>
+                @php $sortOptions = ['latest' => 'Новые', 'popular' => 'Популярные', 'active' => 'Активные']; @endphp
+                @foreach($sortOptions as $key => $label)
+                    <a href="{{ request()->fullUrlWithQuery(['sort' => $key]) }}"
+                       style="padding: 6px 12px; border-radius: 8px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; transition: all 0.2s; text-decoration: none;
+                          {{ $sort === $key ? 'background: linear-gradient(135deg, var(--brown-bright), var(--brown)); color: #fff;' : 'color: var(--text-secondary);' }}">
+                        {{ $label }}
+                    </a>
+                @endforeach
+                <span class="text-muted-c" style="font-size: 11px; letter-spacing: 2px; text-transform: uppercase; margin-left: auto;">
+                Найдено: {{ $themes->total() }}
+            </span>
             </div>
 
-            <div class="grid lg:grid-cols-[1fr_280px] gap-6">
+            {{-- Сетка --}}
+            <div class="forum-layout" style="display: grid; grid-template-columns: 1fr 280px; gap: 20px;">
 
-                <div class="space-y-4">
+                {{-- Темы --}}
+                <div style="min-width: 0;">
                     @forelse($themes as $theme)
-                        <article class="card p-6 flex gap-5 reveal">
-                            <div class="flex flex-col items-center text-center pt-1 min-w-[60px]">
-                                <div class="text-3xl gradient-number">{{ $theme->total_votes ?? 0 }}</div>
-                                <div class="text-xs uppercase tracking-widest text-muted-c mt-1" style="letter-spacing: 2px;">голосов</div>
+                        <article class="card reveal" style="padding: 20px; display: flex; gap: 16px; margin-bottom: 12px;">
+                            <div style="display: flex; flex-direction: column; align-items: center; text-align: center; padding-top: 4px; min-width: 52px; flex-shrink: 0;">
+                                <div class="gradient-number" style="font-family: 'Karelle', serif; font-size: 1.5rem;">{{ $theme->total_votes ?? 0 }}</div>
+                                <div class="text-muted-c" style="font-size: 9px; letter-spacing: 1px; text-transform: uppercase; margin-top: 2px;">голосов</div>
                             </div>
 
-                            <div class="flex-1 min-w-0">
-                                <div class="flex flex-wrap items-center gap-2 mb-3">
+                            <div style="flex: 1; min-width: 0;">
+                                <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 8px;">
                                     @if($theme->is_pinned)<span class="badge badge-pinned">Закреплено</span>@endif
                                     @if($theme->is_closed)<span class="badge badge-brown">Закрыто</span>@endif
                                     @if($theme->category)
                                         <a href="{{ route('forum.index', ['category' => $theme->category->slug]) }}"
-                                           class="text-xs uppercase tracking-widest text-brown hover:underline"
-                                           style="letter-spacing: 2px;">
+                                           class="text-brown" style="font-size: 10px; letter-spacing: 2px; text-transform: uppercase; text-decoration: none;">
                                             {{ $theme->category->name }}
                                         </a>
                                     @endif
                                 </div>
 
-                                <h2 class="text-2xl mb-2">
-                                    <a href="{{ route('forum.theme', $theme->slug) }}" class="title-link text-cream">
-                                        {{ $theme->title }}
-                                    </a>
+                                <h2 style="font-size: clamp(1rem, 2.5vw, 1.35rem); margin-bottom: 8px; line-height: 1.3;">
+                                    <a href="{{ route('forum.theme', $theme->slug) }}" class="title-link text-cream">{{ $theme->title }}</a>
                                 </h2>
 
-                                <p class="text-sm leading-relaxed mb-3 text-secondary-c">
-                                    {{ \Illuminate\Support\Str::limit(strip_tags($theme->content), 180) }}
+                                <p class="text-secondary-c" style="font-size: 13px; line-height: 1.6; margin-bottom: 10px;">
+                                    {{ \Illuminate\Support\Str::limit(strip_tags($theme->content), 160) }}
                                 </p>
 
                                 @if($theme->tags->isNotEmpty())
-                                    <div class="flex flex-wrap gap-1 mb-3">
+                                    <div style="display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px;">
                                         @foreach($theme->tags as $tag)
-                                            <a href="{{ route('forum.index', ['tags' => [$tag->name]]) }}" class="tag">
-                                                #{{ $tag->name }}
-                                            </a>
+                                            <a href="{{ route('forum.index', ['tags' => [$tag->name]]) }}" class="tag">#{{ $tag->name }}</a>
                                         @endforeach
                                     </div>
                                 @endif
 
-                                <div class="flex flex-wrap items-center gap-4 text-xs text-muted-c">
+                                <div class="text-muted-c" style="display: flex; flex-wrap: wrap; gap: 12px; font-size: 11px;">
                                 <span>
-                                    <a href="{{ route('profile.show', $theme->user->name) }}" class="text-brown hover:underline">
-                                        {{ $theme->user->name }}
-                                    </a>
+                                    <a href="{{ route('profile.show', $theme->user->name) }}" class="text-brown" style="text-decoration: none;">{{ $theme->user->name }}</a>
                                     · {{ $theme->created_at->diffForHumans() }}
                                 </span>
                                     <span>{{ $theme->posts_count ?? 0 }} ответов</span>
@@ -143,35 +136,35 @@
                             </div>
                         </article>
                     @empty
-                        <div class="card-flat py-16 text-center">
-                            <p class="text-base text-secondary-c mb-2">Тем не найдено</p>
+                        <div class="card-flat" style="padding: 64px 24px; text-align: center;">
+                            <p class="text-secondary-c" style="margin-bottom: 8px;">Тем не найдено</p>
                             @if($search || $categorySlug || $selectedTags->isNotEmpty())
-                                <a href="{{ route('forum.index') }}" class="text-brown hover:underline text-sm">Сбросить фильтры</a>
+                                <a href="{{ route('forum.index') }}" class="text-brown" style="font-size: 13px; text-decoration: none;">Сбросить фильтры</a>
                             @endif
                         </div>
                     @endforelse
 
                     @if($themes->hasPages())
-                        <div class="mt-8">{{ $themes->links() }}</div>
+                        <div style="margin-top: 24px;">{{ $themes->links() }}</div>
                     @endif
                 </div>
-                
-                <aside class="space-y-4">
-                    <div class="card-flat p-5">
-                        <div class="divider mb-4"><span>категории</span></div>
-                        <ul class="space-y-1 text-sm">
+
+                {{-- Сайдбар --}}
+                <aside class="forum-sidebar" style="min-width: 0;">
+                    <div class="card-flat" style="padding: 20px; margin-bottom: 16px;">
+                        <div class="divider" style="margin-bottom: 16px;"><span>категории</span></div>
+                        <ul style="list-style: none; margin: 0; padding: 0;">
                             @foreach($categories as $category)
                                 <li>
                                     <a href="{{ route('forum.index', ['category' => $category->slug]) }}"
-                                       class="block py-2 px-3 rounded-lg transition-all
-                                          {{ $categorySlug === $category->slug ? 'text-cream' : 'text-cream hover:text-brown' }}"
-                                       style="{{ $categorySlug === $category->slug ? 'background: rgba(212, 165, 116, 0.12); border-left: 2px solid var(--brown-bright); padding-left: 14px;' : '' }}">
+                                       style="display: block; padding: 8px 12px; border-radius: 8px; font-size: 13px; text-decoration: none; color: var(--text-primary); transition: all 0.2s;
+                                          {{ $categorySlug === $category->slug ? 'background: rgba(212,165,116,0.12); border-left: 2px solid var(--brown-bright); padding-left: 14px;' : '' }}">
                                         {{ $category->name }}
                                     </a>
                                     @foreach($category->children as $child)
                                         <a href="{{ route('forum.index', ['category' => $child->slug]) }}"
-                                           class="block pl-6 py-1.5 text-xs transition-all
-                                              {{ $categorySlug === $child->slug ? 'text-brown' : 'text-muted-c hover:text-brown' }}">
+                                           style="display: block; padding: 5px 12px 5px 28px; font-size: 11px; text-decoration: none; transition: color 0.2s;
+                                              color: {{ $categorySlug === $child->slug ? 'var(--brown-bright)' : 'var(--text-muted)' }};">
                                             — {{ $child->name }}
                                         </a>
                                     @endforeach
@@ -181,13 +174,11 @@
                     </div>
 
                     @if($popularTags->isNotEmpty())
-                        <div class="card-flat p-5">
-                            <div class="divider mb-4"><span>популярные теги</span></div>
-                            <div class="flex flex-wrap gap-2">
+                        <div class="card-flat" style="padding: 20px;">
+                            <div class="divider" style="margin-bottom: 16px;"><span>популярные теги</span></div>
+                            <div style="display: flex; flex-wrap: wrap; gap: 6px;">
                                 @foreach($popularTags as $tag)
-                                    <a href="{{ route('forum.index', ['tags' => [$tag->name]]) }}" class="tag">
-                                        #{{ $tag->name }}
-                                    </a>
+                                    <a href="{{ route('forum.index', ['tags' => [$tag->name]]) }}" class="tag">#{{ $tag->name }}</a>
                                 @endforeach
                             </div>
                         </div>
