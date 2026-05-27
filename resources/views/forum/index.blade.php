@@ -66,7 +66,6 @@
         </div>
     </section>
 
-    {{-- Список тем --}}
     <section class="px-6">
         <div class="workspace">
 
@@ -156,8 +155,7 @@
                         <div class="mt-8">{{ $themes->links() }}</div>
                     @endif
                 </div>
-
-                {{-- Сайдбар --}}
+                
                 <aside class="space-y-4">
                     <div class="card-flat p-5">
                         <div class="divider mb-4"><span>категории</span></div>

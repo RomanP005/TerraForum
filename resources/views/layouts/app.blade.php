@@ -825,14 +825,14 @@
     </div>
 </footer>
 
-{{-- МОДАЛКИ --}}
+
 @guest
     @include('auth.login')
     @include('auth.register')
 @endguest
 
 <script>
-    // Модалки
+
     function openModal(id) {
         const m = document.getElementById(id);
         if (!m) return;
@@ -861,7 +861,7 @@
         }
     });
 
-    // Бургер-меню
+
     const burger = document.getElementById('burger');
     const mobileMenu = document.getElementById('mobile-menu');
 
@@ -884,12 +884,12 @@
         });
     }
 
-    // Закрыть меню при клике на ссылку
+
     document.querySelectorAll('.mobile-nav-link').forEach(link => {
         link.addEventListener('click', closeMobileMenu);
     });
 
-    // Reveal при скролле
+
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {

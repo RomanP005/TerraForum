@@ -291,7 +291,6 @@
                                     </div>
                                 </div>
 
-                                {{-- Регион --}}
                                 <div>
                                     <label for="region" class="block text-xs uppercase tracking-widest text-secondary-c mb-2"
                                            style="letter-spacing: 2px;">Регион</label>
@@ -304,7 +303,6 @@
                                     @enderror
                                 </div>
 
-                                {{-- Биография --}}
                                 <div>
                                     <label for="bio" class="block text-xs uppercase tracking-widest text-secondary-c mb-2"
                                            style="letter-spacing: 2px;">О себе</label>
