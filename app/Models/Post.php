@@ -28,7 +28,9 @@ class Post extends Model implements HasMedia
         'is_approved',
         'is_edited',
     ];
-
+    /**
+     * @var string[] 
+     */
     protected $casts = [
         'is_best_answer' => 'boolean',
         'is_approved' => 'boolean',
