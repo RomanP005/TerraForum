@@ -36,7 +36,7 @@ class News extends Model implements HasMedia
     protected $casts = [
         'is_published' => 'boolean',
         'published_at' => 'datetime',
-        'views_count'  => 'integer',
+        'views_count' => 'integer',
     ];
 
     public function getSlugOptions(): SlugOptions
@@ -55,8 +55,8 @@ class News extends Model implements HasMedia
     public function toSearchableArray(): array
     {
         return [
-            'id'      => $this->id,
-            'title'   => $this->title,
+            'id' => $this->id,
+            'title' => $this->title,
             'excerpt' => $this->excerpt,
             'content' => $this->content,
         ];

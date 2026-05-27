@@ -4,52 +4,31 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Laravel\Scout\Searchable;
-use Laravel\Scout\Attributes\SearchUsingFullText;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
-use Spatie\Tags\HasTags;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Overtrue\LaravelVote\Traits\Votable;
+use Spatie\Image\Enums\Fit;
 use Overtrue\LaravelFavorite\Traits\Favoriteable;
 
 class Service extends Model implements HasMedia
 {
-    use SoftDeletes,
-        Searchable,
-        HasSlug,
-        HasTags,
-        InteractsWithMedia,
-        Votable,
-        Favoriteable;
+    use HasFactory, SoftDeletes, HasSlug, InteractsWithMedia, Favoriteable;
 
     protected $fillable = [
-        'title',
-        'slug',
-        'description',
-        'user_id',
-        'service_category',
-        'price',
-        'price_unit',
-        'price_negotiable',
-        'region',
-        'city',
-        'contact_phone',
-        'contact_email',
-        'is_active',
-        'is_approved',
-        'expires_at',
+        'title', 'slug', 'description',
+        'service_category', 'price', 'price_unit', 'price_negotiable',
+        'region', 'city', 'phone', 'user_id',
+        'is_approved', 'is_active',
     ];
 
     protected $casts = [
-        'price' => 'decimal:2',
-        'price_negotiable' => 'boolean',
-        'is_active' => 'boolean',
         'is_approved' => 'boolean',
-        'expires_at' => 'datetime',
+        'is_active' => 'boolean',
+        'price_negotiable' => 'boolean',
+        'price' => 'decimal:2',
     ];
 
     public function getSlugOptions(): SlugOptions
@@ -59,28 +38,21 @@ class Service extends Model implements HasMedia
             ->saveSlugsTo('slug');
     }
 
-    #[SearchUsingFullText(['title', 'description'])]
-    public function toSearchableArray(): array
+    public function getRouteKeyName(): string
     {
-        return [
-            'id' => $this->id,
-            'title' => $this->title,
-            'description' => $this->description,
-            'region' => $this->region,
-            'service_category' => $this->service_category,
-        ];
+        return 'slug';
     }
 
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('images');
+        $this->addMediaCollection('photos');
     }
 
     public function registerMediaConversions(?Media $media = null): void
     {
         $this->addMediaConversion('thumb')
-            ->fit(Fit::Crop, 300, 300)
-            ->performOnCollections('images');
+            ->fit(Fit::Crop, 400, 300)
+            ->performOnCollections('photos');
     }
 
     public function user()
@@ -88,16 +60,26 @@ class Service extends Model implements HasMedia
         return $this->belongsTo(User::class);
     }
 
-    // Отзывы со звёздами (через Comment с rating_value)
-    public function reviews()
+    // Только одобренные и активные
+    public function scopeApproved($query)
     {
-        return $this->morphMany(Comment::class, 'commentable')
-            ->whereNotNull('rating_value');
+        return $query->where('is_approved', true)->where('is_active', true);
     }
 
-    // Средний рейтинг услуги
-    public function getAverageRatingAttribute(): float
+    // Список категорий услуг
+    public static function categories(): array
     {
-        return round($this->reviews()->avg('rating_value') ?? 0, 1);
+        return [
+            'Вспашка и обработка почвы',
+            'Обрезка деревьев и кустарников',
+            'Полив и орошение',
+            'Уборка урожая',
+            'Посадка и пересадка',
+            'Борьба с вредителями',
+            'Удобрение и подкормка',
+            'Ландшафтный дизайн',
+            'Строительство теплиц',
+            'Другое',
+        ];
     }
 }

@@ -6,13 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Overtrue\LaravelFavorite\Traits\Favoriteable;
-use Overtrue\LaravelVote\Traits\Votable;
+use Overtrue\LaravelFavorite\Traits\Favoriter;
+use Overtrue\LaravelVote\Traits\Voter;
 use Spatie\Permission\Traits\HasRoles;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Image\Enums\Fit;
+
 
 
 class User extends Authenticatable implements HasMedia
@@ -22,8 +23,8 @@ class User extends Authenticatable implements HasMedia
         HasApiTokens,
         HasRoles,
         InteractsWithMedia,
-        Votable,
-        Favoriteable;
+        Voter,
+        Favoriter;
     protected $fillable = [
         'name',
         'email',
@@ -31,6 +32,7 @@ class User extends Authenticatable implements HasMedia
         'bio',
         'region',
         'rating',
+        'news_subscribed',
         'login_attempts',
         'locked_until',
         'last_login_at',
@@ -48,6 +50,7 @@ class User extends Authenticatable implements HasMedia
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'news_subscribed'   => 'boolean',
             'locked_until' => 'datetime',
             'last_login_at' => 'datetime',
             'rating' => 'integer',
@@ -79,5 +82,23 @@ class User extends Authenticatable implements HasMedia
     {
         return $this->getFirstMediaUrl('avatar', 'thumb')
             ?: 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&background=4d7c0f&color=fff';
+    }
+
+    // Темы форума
+    public function themes()
+    {
+        return $this->hasMany(\App\Models\Theme::class);
+    }
+
+// Сообщения (ответы)
+    public function posts()
+    {
+        return $this->hasMany(\App\Models\Post::class);
+    }
+
+// Услуги
+    public function services()
+    {
+        return $this->hasMany(\App\Models\Service::class);
     }
 }

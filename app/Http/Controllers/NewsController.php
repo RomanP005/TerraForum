@@ -8,29 +8,23 @@ use Illuminate\View\View;
 
 class NewsController extends Controller
 {
-    /**
-     * Список новостей.
-     */
     public function index(Request $request): View
     {
         $query = News::published()
             ->with(['author', 'media'])
             ->latest('published_at');
 
-        // Фильтр по категории
         if ($category = $request->input('category')) {
             $query->where('news_category', $category);
         }
 
         $news = $query->paginate(12)->withQueryString();
 
-        // Уникальные категории для фильтра
         $categories = News::published()
             ->whereNotNull('news_category')
             ->distinct()
             ->pluck('news_category');
 
-        // Последние 3 для сайдбара
         $latest = News::published()
             ->with('media')
             ->latest('published_at')
@@ -40,9 +34,6 @@ class NewsController extends Controller
         return view('news.index', compact('news', 'categories', 'latest', 'category'));
     }
 
-    /**
-     * Детальная страница новости.
-     */
     public function show(News $news): View
     {
         abort_unless($news->is_published, 404);

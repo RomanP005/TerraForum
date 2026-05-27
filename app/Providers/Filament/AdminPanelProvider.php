@@ -28,6 +28,9 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->colors(['primary' => Color::hex('#3d4f33')])
+            ->authGuard('admin')
+            ->authMiddleware([Authenticate::class])
+
 
             // Автообнаружение всех ресурсов из папки
             ->discoverResources(
@@ -45,16 +48,12 @@ class AdminPanelProvider extends PanelProvider
 
             // Группы навигации
             ->navigationGroups([
-                NavigationGroup::make('Контент')
-                    ->icon('heroicon-o-document-text'),
-                NavigationGroup::make('Модерация')
-                    ->icon('heroicon-o-shield-check'),
-                NavigationGroup::make('Управление')
-                    ->icon('heroicon-o-cog-6-tooth'),
+                NavigationGroup::make('Контент'),
+                NavigationGroup::make('Модерация'),
+                NavigationGroup::make('Управление'),
             ])
 
             // Доступ только для admin и moderator
-            ->authGuard('web')
             ->authMiddleware([Authenticate::class])
 
             ->middleware([

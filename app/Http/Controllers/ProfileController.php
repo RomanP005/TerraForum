@@ -23,16 +23,29 @@ class ProfileController extends Controller
         $isOwner = Auth::check() && Auth::id() === $user->id;
 
         $stats = ['themes' => 0, 'posts' => 0, 'services' => 0, 'votes_given' => 0];
-        try { $stats['themes']      = $user->themes()->count();   } catch (\Exception $e) {}
-        try { $stats['posts']       = $user->posts()->count();    } catch (\Exception $e) {}
-        try { $stats['services']    = $user->services()->count(); } catch (\Exception $e) {}
-        try { $stats['votes_given'] = $user->votes()->count();    } catch (\Exception $e) {}
+        try {
+            $stats['themes'] = $user->themes()->count();
+        } catch (\Exception $e) {
+        }
+        try {
+            $stats['posts'] = $user->posts()->count();
+        } catch (\Exception $e) {
+        }
+        try {
+            $stats['services'] = $user->services()->count();
+        } catch (\Exception $e) {
+        }
+        try {
+            $stats['votes_given'] = $user->votes()->count();
+        } catch (\Exception $e) {
+        }
 
         $recentThemes = collect();
         try {
             $recentThemes = $user->themes()
                 ->with('category')->latest()->take(5)->get();
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $allThemes = collect();
         try {
@@ -42,11 +55,57 @@ class ProfileController extends Controller
                 ->withTotalVotes()
                 ->latest()
                 ->paginate(10);
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $favorites = collect();
         if ($isOwner) {
-            try { $favorites = $user->favorites()->latest()->take(8)->get(); } catch (\Exception $e) {}
+            try {
+                // Получаем сырые записи из таблицы favorites
+                $rawFavorites = \DB::table('favorites')
+                    ->where('user_id', $user->id)
+                    ->orderByDesc('created_at')
+                    ->get();
+
+                $result = collect();
+
+                foreach ($rawFavorites as $fav) {
+                    // Избранные ТЕМЫ
+                    if ($fav->favoriteable_type === 'App\\Models\\Theme') {
+                        $theme = \App\Models\Theme::with('category')->find($fav->favoriteable_id);
+                        if ($theme) {
+                            $result->push([
+                                'type'  => 'theme',
+                                'label' => 'Тема',
+                                'title' => $theme->title,
+                                'url'   => route('forum.theme', $theme->slug),
+                                'meta'  => $theme->category?->name ?? '',
+                                'date'  => \Carbon\Carbon::parse($fav->created_at)->diffForHumans(),
+                            ]);
+                        }
+                    }
+
+                    // Избранные ОТВЕТЫ
+                    if ($fav->favoriteable_type === 'App\\Models\\Post') {
+                        $post = \App\Models\Post::with('theme')->find($fav->favoriteable_id);
+                        if ($post && $post->theme) {
+                            $result->push([
+                                'type'  => 'post',
+                                'label' => 'Ответ',
+                                'title' => \Illuminate\Support\Str::limit($post->content, 100),
+                                'url'   => route('forum.theme', $post->theme->slug) . '#post-' . $post->id,
+                                'meta'  => 'в теме: ' . $post->theme->title,
+                                'date'  => \Carbon\Carbon::parse($fav->created_at)->diffForHumans(),
+                            ]);
+                        }
+                    }
+                }
+
+                $favorites = $result;
+
+            } catch (\Exception $e) {
+                $favorites = collect();
+            }
         }
 
         $tabs = $isOwner
@@ -69,7 +128,7 @@ class ProfileController extends Controller
         $validated = $request->validated();
 
         $user->update([
-            'bio'    => $validated['bio'] ?? null,
+            'bio' => $validated['bio'] ?? null,
             'region' => $validated['region'] ?? null,
         ]);
 

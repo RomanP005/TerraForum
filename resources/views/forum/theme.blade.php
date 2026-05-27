@@ -8,7 +8,7 @@
     {{-- Хлебные крошки --}}
     <section class="py-4 px-6" style="background: var(--bg-section-alt);">
         <div class="workspace">
-            <div class="flex flex-wrap items-center gap-2 text-xs uppercase tracking-widest" style="letter-spacing: 2px;">
+            <div class="flex flex-wrap items-center gap-2 text-xs uppercase tracking-widest text-muted-c" style="letter-spacing: 2px;">
                 <a href="{{ route('forum.index') }}" class="text-brown hover:underline">Форум</a>
                 <span class="text-muted-c">/</span>
                 @if($theme->category)
@@ -38,10 +38,12 @@
             </header>
 
             <article class="card-flat p-6 md:p-8 flex flex-col md:flex-row gap-6 mb-8 reveal">
+
+                {{-- Автор + голосование + избранное --}}
                 <div class="md:w-40 flex md:flex-col items-center gap-4 md:gap-3">
                     <a href="{{ route('profile.show', $theme->user->name) }}" class="avatar w-20 h-20">
-                        @if($theme->user->getFirstMediaUrl('avatar', 'thumb'))
-                            <img src="{{ $theme->user->getFirstMediaUrl('avatar', 'thumb') }}" alt="" class="w-full h-full object-cover">
+                        @if($theme->user->getFirstMediaUrl('avatar'))
+                            <img src="{{ $theme->user->getFirstMediaUrl('avatar') }}" alt="" class="w-full h-full object-cover">
                         @else
                             <div class="avatar-fallback" style="font-size: 28px;">
                                 {{ mb_strtoupper(mb_substr($theme->user->name, 0, 1)) }}
@@ -54,7 +56,8 @@
                         <div class="text-xs text-muted-c">Репутация: {{ $theme->user->rating ?? 0 }}</div>
                     </div>
 
-                    @auth @can('vote')
+                    {{-- Голосование --}}
+                    @auth
                         <div class="flex md:flex-col items-center gap-2 mt-2">
                             <form action="{{ route('forum.theme.vote', $theme->slug) }}" method="POST" class="inline">
                                 @csrf
@@ -68,9 +71,27 @@
                                 <button type="submit" class="vote-btn" title="Бесполезная">▼</button>
                             </form>
                         </div>
-                    @endcan @endauth
+
+                        {{-- Кнопка избранного для темы --}}
+                        <form action="{{ route('favorites.theme.toggle', $theme->slug) }}" method="POST" class="inline mt-2">
+                            @csrf
+                            @php $isFavorited = auth()->user()->hasFavorited($theme); @endphp
+                            <button type="submit"
+                                    title="{{ $isFavorited ? 'Убрать из избранного' : 'Добавить в избранное' }}"
+                                    class="flex flex-col items-center gap-1 transition-all hover:scale-110"
+                                    style="background: transparent; border: none; cursor: pointer;">
+                            <span style="font-size: 20px; color: {{ $isFavorited ? 'var(--brown-bright)' : 'var(--text-muted)' }};">
+                                {{ $isFavorited ? '★' : '☆' }}
+                            </span>
+                                <span class="text-xs uppercase tracking-widest text-muted-c" style="letter-spacing: 1px; font-size: 9px;">
+                                {{ $isFavorited ? 'В избранном' : 'Избранное' }}
+                            </span>
+                            </button>
+                        </form>
+                    @endauth
                 </div>
 
+                {{-- Контент темы --}}
                 <div class="flex-1 min-w-0">
                     <div class="text-cream leading-relaxed whitespace-pre-line">{{ $theme->content }}</div>
 
@@ -78,9 +99,8 @@
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-6">
                             @foreach($theme->getMedia('attachments') as $media)
                                 <a href="{{ $media->getUrl() }}" target="_blank">
-                                    <img src="{{ $media->getUrl('thumb') }}" alt=""
-                                         class="w-full aspect-square object-cover rounded-xl hover:opacity-90 transition"
-                                         style="box-shadow: var(--shadow-soft);">
+                                    <img src="{{ $media->getUrl() }}" alt=""
+                                         class="w-full aspect-square object-cover rounded-xl hover:opacity-90 transition">
                                 </a>
                             @endforeach
                         </div>
@@ -110,16 +130,18 @@
             @forelse($posts as $post)
                 <article id="post-{{ $post->id }}"
                          class="card p-6 mb-3 flex flex-col md:flex-row gap-6 reveal"
-                         style="{{ $post->is_best_answer ? 'border: 2px solid var(--forest-light); box-shadow: 0 0 0 4px rgba(107, 138, 92, 0.1), var(--shadow-soft);' : '' }}">
+                         style="{{ $post->is_best_answer ? 'border: 2px solid var(--forest-light); box-shadow: 0 0 0 4px rgba(107, 138, 92, 0.1);' : '' }}">
 
                     <div class="md:w-32 flex md:flex-col items-center gap-3">
                         @if($post->is_best_answer)
-                            <div class="badge" style="background: linear-gradient(135deg, var(--forest-light), var(--forest)); color: #ffffff; padding: 6px 14px;">Лучший ответ</div>
+                            <div class="badge" style="background: linear-gradient(135deg, var(--forest-light), var(--forest)); color: #ffffff; padding: 6px 14px;">
+                                Лучший ответ
+                            </div>
                         @endif
 
                         <a href="{{ route('profile.show', $post->user->name) }}" class="avatar w-14 h-14">
-                            @if($post->user->getFirstMediaUrl('avatar', 'thumb'))
-                                <img src="{{ $post->user->getFirstMediaUrl('avatar', 'thumb') }}" alt="" class="w-full h-full object-cover">
+                            @if($post->user->getFirstMediaUrl('avatar'))
+                                <img src="{{ $post->user->getFirstMediaUrl('avatar') }}" alt="" class="w-full h-full object-cover">
                             @else
                                 <div class="avatar-fallback" style="font-size: 22px;">
                                     {{ mb_strtoupper(mb_substr($post->user->name, 0, 1)) }}
@@ -132,7 +154,8 @@
                             <div class="text-xs text-muted-c">{{ $post->user->rating ?? 0 }}</div>
                         </div>
 
-                        @auth @can('vote')
+                        {{-- Голосование за ответ --}}
+                        @auth
                             <div class="flex md:flex-col items-center gap-1">
                                 <form action="{{ route('forum.post.vote', $post->id) }}" method="POST" class="inline">
                                     @csrf
@@ -146,9 +169,24 @@
                                     <button type="submit" class="vote-btn">▼</button>
                                 </form>
                             </div>
-                        @endcan @endauth
+
+                            {{-- Кнопка избранного для ответа --}}
+                            <form action="{{ route('favorites.post.toggle', $post->id) }}" method="POST" class="inline">
+                                @csrf
+                                @php $isPostFavorited = auth()->user()->hasFavorited($post); @endphp
+                                <button type="submit"
+                                        title="{{ $isPostFavorited ? 'Убрать из избранного' : 'Сохранить ответ' }}"
+                                        class="transition-all hover:scale-110"
+                                        style="background: transparent; border: none; cursor: pointer;">
+                                <span style="font-size: 18px; color: {{ $isPostFavorited ? 'var(--brown-bright)' : 'var(--text-muted)' }};">
+                                    {{ $isPostFavorited ? '★' : '☆' }}
+                                </span>
+                                </button>
+                            </form>
+                        @endauth
                     </div>
 
+                    {{-- Контент ответа --}}
                     <div class="flex-1 min-w-0">
                         <div class="text-xs uppercase tracking-widest text-muted-c mb-3" style="letter-spacing: 2px;">
                             {{ $post->created_at->translatedFormat('j F Y, H:i') }}
@@ -190,28 +228,26 @@
         </div>
     </section>
 
+    {{-- Форма ответа --}}
     @auth
         @if(! $theme->is_closed)
             @can('create posts')
                 <section class="py-10 px-6">
                     <div class="workspace">
                         <h2 class="text-2xl mb-4">Ваш ответ</h2>
-
-                        <form action="{{ route('forum.post.store', $theme->slug) }}" method="POST" enctype="multipart/form-data" class="space-y-4 card-flat p-6">
+                        <form action="{{ route('forum.post.store', $theme->slug) }}" method="POST"
+                              enctype="multipart/form-data" class="space-y-4 card-flat p-6">
                             @csrf
-
                             <textarea name="content" rows="6" required
                                       placeholder="Поделитесь опытом или задайте уточняющий вопрос..."
                                       class="input-field w-full px-3 py-2 text-sm @error('content') error @enderror">{{ old('content') }}</textarea>
                             @error('content')<p class="text-xs" style="color: var(--error);">{{ $message }}</p>@enderror
-
                             <div>
                                 <label class="block text-xs uppercase tracking-widest text-secondary-c mb-2" style="letter-spacing: 2px;">
                                     Прикрепить фото <span class="normal-case opacity-60">(до 3)</span>
                                 </label>
                                 <input type="file" name="attachments[]" multiple accept="image/jpeg,image/png,image/webp" class="text-xs text-secondary-c">
                             </div>
-
                             <button type="submit" class="btn btn-filled">Опубликовать ответ</button>
                         </form>
                     </div>

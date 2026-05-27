@@ -5,7 +5,6 @@
 
 @section('content')
 
-    {{-- Заголовок --}}
     <section class="py-12 px-6" style="background: var(--bg-section-alt);">
         <div class="workspace text-center reveal">
             <div class="divider mb-4"><span>обсуждения</span></div>
@@ -16,7 +15,6 @@
         </div>
     </section>
 
-    {{-- Поиск --}}
     <section class="px-6 -mt-6 mb-8 relative z-10">
         <div class="workspace">
             <div class="card-flat p-5 reveal">

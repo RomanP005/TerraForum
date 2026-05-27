@@ -5,7 +5,6 @@
 
 @section('content')
 
-    {{-- HERO — серо-зелёный градиент без фотографии --}}
     <section style="
     min-height: 75vh;
     display: flex;
@@ -16,19 +15,15 @@
     position: relative;
     overflow: hidden;
 ">
-        {{-- Лёгкий шум поверх градиента для глубины --}}
         <div style="
         position: absolute; inset: 0;
         background: radial-gradient(ellipse at 30% 70%, rgba(100, 120, 85, 0.3), transparent 60%);
         pointer-events: none;
     "></div>
-
         <div style="position: relative; z-index: 2; padding: 100px 24px; max-width: 800px;">
-
             <div class="divider mb-8 reveal" style="color: rgba(245, 239, 224, 0.7);">
                 <span>est. 2026</span>
             </div>
-
             <h1 class="reveal reveal-delay-1" style="
             font-family: 'Karelle', 'Cormorant Garamond', Georgia, serif;
             font-size: clamp(2.5rem, 6vw, 4.5rem);
@@ -40,7 +35,6 @@
         ">
                 Сообщество, которое<br>растёт вместе с вами
             </h1>
-
             <p class="reveal reveal-delay-2" style="
             font-size: 1rem;
             color: rgba(245, 239, 224, 0.8);
@@ -52,7 +46,6 @@
                 Место для садоводов и фермеров, где обмениваются опытом,
                 ищут проверенные советы и предлагают услуги.
             </p>
-
             <div class="flex flex-col sm:flex-row gap-4 justify-center reveal reveal-delay-3">
                 @guest
                     <button type="button" onclick="openModal('register-modal')"
@@ -69,11 +62,9 @@
                     </a>
                 @endguest
             </div>
-
         </div>
     </section>
 
-    {{-- ВОЗМОЖНОСТИ --}}
     <section class="py-24 px-6">
         <div class="workspace">
             <div class="text-center mb-16 reveal">

@@ -2,88 +2,115 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Forum\CreatePostRequest;
+use App\Http\Requests\Post\CreatePostRequest;
 use App\Models\Post;
 use App\Models\Theme;
+use App\Notifications\ReplyToTheme;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
     /**
      * Создать ответ в теме.
      */
-    public function store(CreatePostRequest $request, Theme $theme): RedirectResponse
+    public function store(CreatePostRequest $request, string $slug): RedirectResponse
     {
-        // Нельзя отвечать в закрытой теме
+        $theme = Theme::where('slug', $slug)->firstOrFail();
+
         abort_if($theme->is_closed, 403, 'Тема закрыта для ответов');
 
-        $post = Post::create([
+        $post = $theme->posts()->create([
             'content' => $request->validated()['content'],
-            'theme_id' => $theme->id,
             'user_id' => auth()->id(),
-            'parent_post_id' => $request->validated()['parent_post_id'] ?? null,
         ]);
 
-        // Прикрепления
+        // Прикрепить фото если есть
         if ($request->hasFile('attachments')) {
             foreach ($request->file('attachments') as $file) {
                 $post->addMedia($file)->toMediaCollection('attachments');
             }
         }
 
-        // Обновляем активность темы
-        $theme->update([
-            'last_activity_at' => now(),
-            'comments_count' => $theme->posts()->count(),
-        ]);
+        // Обновить счётчик ответов и время активности темы
+        $theme->increment('comments_count');
+        $theme->update(['last_activity_at' => now()]);
 
-        return redirect()->route('forum.theme', $theme->slug)
-            ->with('success', 'Ответ опубликован')
-            ->withFragment('post-' . $post->id);
+        // Уведомить автора темы (если это не он сам отвечает)
+        if ($theme->user_id !== auth()->id()) {
+            try {
+                $theme->user->notify(new ReplyToTheme($theme, $post->load('user')));
+            } catch (\Exception $e) {
+                // Если уведомление не отправилось — не падаем
+            }
+        }
+
+        return redirect()
+            ->route('forum.theme', $theme->slug)
+            ->with('success', 'Ответ опубликован');
     }
 
     /**
-     * Голосование за сообщение.
+     * Голосование за ответ.
+     * При повторном нажатии того же голоса — отмена (возврат к 0).
      */
-    public function vote(Request $request, Post $post): RedirectResponse
+    public function vote(Post $post): RedirectResponse
     {
-        abort_unless(auth()->check() && auth()->user()->can('vote'), 403);
+        $user  = auth()->user();
+        $value = request('value');
 
-        $value = $request->input('value');
+        abort_unless(in_array($value, ['up', 'down']), 400);
 
-        if (! in_array($value, ['up', 'down'])) {
-            abort(400);
+        // Получаем текущий голос пользователя
+        $existingVote = DB::table('votes')
+            ->where('user_id', $user->id)
+            ->where('votable_id', $post->id)
+            ->where('votable_type', get_class($post))
+            ->first();
+
+        if ($existingVote) {
+            $isSameVote = ($existingVote->votes === 1 && $value === 'up')
+                || ($existingVote->votes === -1 && $value === 'down');
+
+            if ($isSameVote) {
+                // Тот же голос — удаляем запись, возврат к 0
+                DB::table('votes')
+                    ->where('user_id', $user->id)
+                    ->where('votable_id', $post->id)
+                    ->where('votable_type', get_class($post))
+                    ->delete();
+
+                return back();
+            }
         }
 
-        if ($value === 'up') {
-            auth()->user()->upvote($post);
-        } else {
-            auth()->user()->downvote($post);
-        }
+        // Ставим новый голос
+        $value === 'up' ? $user->upvote($post) : $user->downvote($post);
 
-        return back()->withFragment('post-' . $post->id);
+        return back();
     }
 
     /**
-     * Отметить пост как лучший ответ (только автор темы).
+     * Отметить ответ как лучший.
      */
     public function markBestAnswer(Post $post): RedirectResponse
     {
         $theme = $post->theme;
 
-        // Только автор темы или модератор может отмечать лучший ответ
         abort_unless(
-            auth()->id() === $theme->user_id || auth()->user()->hasAnyRole(['moderator', 'admin']),
+            auth()->id() === $theme->user_id ||
+            auth()->user()->hasAnyRole(['moderator', 'admin']),
             403
         );
 
-        // Снимаем флаг с других сообщений этой темы
-        $theme->posts()->update(['is_best_answer' => false]);
+        // Снять предыдущий лучший ответ
+        $theme->posts()
+            ->where('is_best_answer', true)
+            ->update(['is_best_answer' => false]);
 
-        // Ставим этому посту
+        // Отметить новый
         $post->update(['is_best_answer' => true]);
 
-        return back()->withFragment('post-' . $post->id);
+        return back()->with('success', 'Лучший ответ отмечен');
     }
 }

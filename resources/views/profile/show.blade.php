@@ -178,31 +178,70 @@
 
                 {{-- === ИЗБРАННОЕ === --}}
                 <div id="panel-favorites" class="tab-panel hidden space-y-3">
+
                     @if($isOwner && $favorites->isNotEmpty())
-                        @foreach($favorites as $favorite)
-                            <div class="card p-5 reveal">
-                                <div class="text-xs uppercase tracking-widest text-brown mb-2" style="letter-spacing: 2px;">
-                                    {{ class_basename($favorite->favoriteable_type) }}
+                        @foreach($favorites as $item)
+                            <a href="{{ $item['url'] }}"
+                               class="card p-5 flex gap-4 reveal group"
+                               style="display: flex; text-decoration: none;">
+
+                                {{-- Иконка типа --}}
+                                <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center"
+                                     style="background: {{ $item['type'] === 'theme' ? 'rgba(61,79,51,0.15)' : 'rgba(184,136,88,0.15)' }};
+                            min-width: 40px; min-height: 40px;">
+                    <span class="text-xs uppercase font-medium"
+                          style="color: {{ $item['type'] === 'theme' ? 'var(--forest-light)' : 'var(--brown)' }}; letter-spacing: 1px;">
+                        {{ $item['type'] === 'theme' ? 'ТМ' : 'ОТ' }}
+                    </span>
                                 </div>
-                                <p class="text-sm text-secondary-c leading-relaxed">
-                                    {{ $favorite->favoriteable?->title ?? $favorite->favoriteable?->content ?? 'Удалённый объект' }}
-                                </p>
-                            </div>
+
+                                <div class="flex-1 min-w-0">
+                                    {{-- Тип + дата --}}
+                                    <div class="flex items-center gap-3 mb-1">
+                                        <span class="badge badge-soft">{{ $item['label'] }}</span>
+                                        <span class="text-xs text-muted-c">{{ $item['date'] }}</span>
+                                    </div>
+
+                                    {{-- Заголовок --}}
+                                    <div class="text-sm leading-snug mb-1"
+                                         style="color: var(--text-primary); font-weight: 400;">
+                                        {{ $item['title'] }}
+                                    </div>
+
+                                    {{-- Мета --}}
+                                    @if($item['meta'])
+                                        <div class="text-xs text-muted-c">{{ $item['meta'] }}</div>
+                                    @endif
+                                </div>
+
+                                {{-- Стрелка --}}
+                                <div class="flex-shrink-0 self-center text-muted-c"
+                                     style="transition: color 0.2s;">
+                                    →
+                                </div>
+
+                            </a>
                         @endforeach
                     @else
                         <div class="card-flat py-12 text-center">
                             <p class="text-secondary-c text-sm">
-                                {{ $isOwner ? 'Вы ещё ничего не добавили в избранное.' : 'Избранное приватное.' }}
+                                @if($isOwner)
+                                    Вы ещё ничего не добавили в избранное.
+                                    <br>
+                                    <span class="text-muted-c text-xs mt-2 block">
+                        Нажмите звёздочку на теме или ответе чтобы сохранить его здесь.
+                    </span>
+                                @else
+                                    Избранное приватное.
+                                @endif
                             </p>
                         </div>
                     @endif
                 </div>
 
-                {{-- === НАСТРОЙКИ (только владелец) === --}}
                 @if($isOwner)
                     <div id="panel-settings" class="tab-panel hidden space-y-6">
 
-                        {{-- Редактирование профиля --}}
                         <div class="card-flat p-6">
                             <div class="divider mb-6"><span>основные данные</span></div>
 
@@ -211,7 +250,6 @@
                                 @csrf
                                 @method('PATCH')
 
-                                {{-- Аватар --}}
                                 <div>
                                     <label class="block text-xs uppercase tracking-widest text-secondary-c mb-3"
                                            style="letter-spacing: 2px;">Аватар</label>
@@ -240,7 +278,6 @@
                                             @enderror
                                         </div>
 
-                                        {{-- Удаление через чекбокс (не отдельная форма!) --}}
                                         @if($user->getFirstMediaUrl('avatar'))
                                             <label class="flex items-center gap-2 cursor-pointer">
                                                 <input type="checkbox" name="delete_avatar" value="1"

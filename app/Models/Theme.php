@@ -27,13 +27,11 @@ class Theme extends Model implements HasMedia
         InteractsWithMedia,
         Votable,
         Favoriteable;
-
     protected $fillable = [
         'title', 'slug', 'content', 'user_id', 'category_id',
         'is_pinned', 'is_closed', 'is_approved',
         'views_count', 'comments_count', 'last_activity_at',
     ];
-
     protected $casts = [
         'is_pinned' => 'boolean',
         'is_closed' => 'boolean',
@@ -43,7 +41,6 @@ class Theme extends Model implements HasMedia
         'last_activity_at' => 'datetime',
     ];
 
-    // Slug из title (TerraForum -> terraforum)
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
