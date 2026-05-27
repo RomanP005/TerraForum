@@ -6,12 +6,12 @@
 @section('content')
 
     <div class="workspace px-6 py-10">
-        <div class="grid lg:grid-cols-[300px_1fr] gap-8 items-start">
+        <div class="grid gap-6 profile-layout items-start" style="grid-template-columns: 300px 1fr;">
 
             {{-- =====================
                  САЙДБАР (sticky)
                  ===================== --}}
-            <aside class="card p-6 lg:sticky lg:top-24 space-y-5">
+            <aside class="card p-6 profile-sidebar space-y-5" style="position: sticky; top: 88px;">
 
                 {{-- Аватар + имя --}}
                 <div class="flex flex-col items-center text-center">
@@ -95,7 +95,7 @@
             <div>
 
                 {{-- Табы --}}
-                <div class="card-flat mb-6 p-1.5 flex gap-1 overflow-x-auto">
+                <div class="card-flat mb-6 p-1.5 flex gap-1 overflow-x-auto profile-tabs">
                     @foreach($tabs as $key => $label)
                         <button id="tab-{{ $key }}"
                                 onclick="switchTab('{{ $key }}')"

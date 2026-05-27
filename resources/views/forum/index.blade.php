@@ -70,7 +70,7 @@
     <section class="px-6">
         <div class="workspace">
 
-            <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center justify-between mb-6 forum-filters flex-wrap gap-2">
                 <div class="flex items-center gap-1 text-xs uppercase tracking-widest" style="letter-spacing: 2px;">
                     <span class="text-muted-c mr-2">Сортировать:</span>
                     @php $sortOptions = ['latest' => 'Новые', 'popular' => 'Популярные', 'active' => 'Активные']; @endphp
@@ -83,12 +83,12 @@
                         </a>
                     @endforeach
                 </div>
-                <div class="text-xs text-muted-c uppercase tracking-widest" style="letter-spacing: 2px;">
+                <div class="text-xs text-muted-c uppercase tracking-widest forum-found" style="letter-spacing: 2px;">
                     Найдено: {{ $themes->total() }}
                 </div>
             </div>
 
-            <div class="grid lg:grid-cols-[1fr_280px] gap-6">
+            <div class="grid gap-6 forum-layout" style="grid-template-columns: 1fr 280px;">
 
                 <div class="space-y-4">
                     @forelse($themes as $theme)
@@ -158,7 +158,7 @@
                 </div>
 
                 {{-- Сайдбар --}}
-                <aside class="space-y-4">
+                <aside class="space-y-4 forum-sidebar">
                     <div class="card-flat p-5">
                         <div class="divider mb-4"><span>категории</span></div>
                         <ul class="space-y-1 text-sm">

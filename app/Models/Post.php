@@ -29,7 +29,7 @@ class Post extends Model implements HasMedia
         'is_edited',
     ];
     /**
-     * @var string[] 
+     * @var string[]
      */
     protected $casts = [
         'is_best_answer' => 'boolean',
