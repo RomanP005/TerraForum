@@ -4,7 +4,6 @@
 
 @section('content')
 
-    {{-- Hero --}}
     <section style="background: radial-gradient(ellipse at 60% 40%, #7a8c6e 0%, #5a6b52 35%, #4a5c44 60%, #3d4f38 100%); padding: 64px 24px; text-align: center; color: #f5efe0;">
         <div class="divider mb-4 reveal" style="color: rgba(245,239,224,0.6);"><span>новости</span></div>
         <h1 class="reveal reveal-delay-1" style="font-family: 'Karelle', serif; font-size: clamp(2rem, 5vw, 3.5rem); font-weight: normal; color: #f5efe0; margin-bottom: 0.75rem;">
@@ -99,7 +98,6 @@
                     @endif
                 </div>
 
-                {{-- Сайдбар --}}
                 <aside class="space-y-4">
                     <div class="card-flat p-5">
                         <div class="divider mb-4"><span>последние</span></div>

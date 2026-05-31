@@ -17,9 +17,6 @@
             font-display: swap;
         }
 
-        /* ══════════════════════════════════════
-           ПАЛИТРА И РЕЖИМЫ
-        ══════════════════════════════════════ */
         :root {
             --forest: #3d4f33;
             --forest-dark: #2e3d27;
@@ -59,9 +56,6 @@
             --shadow-hover: 0 16px 40px -16px rgba(0,0,0,0.6);
         }
 
-        /* ══════════════════════════════════════
-           БАЗОВЫЕ
-        ══════════════════════════════════════ */
         *, *::before, *::after { box-sizing: border-box; }
         * { -webkit-font-smoothing: antialiased; }
 
@@ -97,9 +91,6 @@
             padding-right: 24px;
         }
 
-        /* ══════════════════════════════════════
-           ШАПКА — бургер на все ≤ 900px
-        ══════════════════════════════════════ */
         .green-header {
             background: linear-gradient(135deg, var(--forest) 0%, var(--forest-dark) 100%);
             border-bottom: 1px solid rgba(0,0,0,0.2);
@@ -125,7 +116,6 @@
             flex-shrink: 0;
         }
 
-        /* Десктоп-навигация (>900px) */
         .desktop-nav {
             display: flex;
             align-items: center;
@@ -139,7 +129,6 @@
         }
         .burger-btn { display: none; }
 
-        /* Бургер */
         .burger-btn {
             flex-direction: column;
             justify-content: center;
@@ -165,7 +154,6 @@
         .burger-btn.open span:nth-child(2) { opacity: 0; }
         .burger-btn.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-        /* Мобильное меню */
         .mobile-menu {
             display: none;
             flex-direction: column;
@@ -200,9 +188,6 @@
         }
         .mobile-nav-link:last-child { border-bottom: none; }
 
-        /* ══════════════════════════════════════
-           НАВИГАЦИЯ — ССЫЛКИ
-        ══════════════════════════════════════ */
         .nav-link {
             font-size: 11px;
             letter-spacing: 2px;
@@ -248,9 +233,6 @@
         }
         .header-reg-btn:hover { transform: translateY(-2px); }
 
-        /* ══════════════════════════════════════
-           КНОПКИ
-        ══════════════════════════════════════ */
         .btn {
             display: inline-block;
             padding: 10px 24px;
@@ -277,9 +259,6 @@
         .btn-ghost { color: var(--text-secondary); border-color: var(--border-medium); }
         .btn-ghost:hover { color: var(--text-primary); border-color: var(--brown); background: var(--bg-input); }
 
-        /* ══════════════════════════════════════
-           ПОЛЯ ВВОДА
-        ══════════════════════════════════════ */
         .input-field {
             background-color: var(--bg-input);
             border: 1px solid var(--border-medium);
@@ -298,10 +277,6 @@
             box-shadow: 0 0 0 3px rgba(184,136,88,0.18);
         }
         .input-field.error { border-color: var(--error); }
-
-        /* ══════════════════════════════════════
-           КАРТОЧКИ
-        ══════════════════════════════════════ */
         .card {
             background-color: var(--bg-card);
             border: 1px solid var(--border-soft);
@@ -322,9 +297,6 @@
             box-shadow: var(--shadow-soft);
         }
 
-        /* ══════════════════════════════════════
-           ПРОЧИЕ УТИЛИТЫ
-        ══════════════════════════════════════ */
         .divider {
             display: flex; align-items: center; justify-content: center;
             gap: 16px; font-size: 10px; letter-spacing: 3px;
@@ -407,9 +379,6 @@
         .title-link:hover { color: var(--brown); }
         body.mode-earth .title-link:hover { color: var(--brown-bright); }
 
-        /* ══════════════════════════════════════
-           МОДАЛКИ
-        ══════════════════════════════════════ */
         .modal-overlay {
             position: fixed; inset: 0; background: rgba(0,0,0,0.7);
             backdrop-filter: blur(8px); z-index: 50;
@@ -433,9 +402,6 @@
         }
         .modal-close:hover { background: var(--bg-input); color: var(--text-primary); transform: rotate(90deg); }
 
-        /* ══════════════════════════════════════
-           HERO
-        ══════════════════════════════════════ */
         .hero {
             position: relative; min-height: 60vh;
             display: flex; align-items: center; justify-content: center;
@@ -449,9 +415,6 @@
         .hero-content { position: relative; z-index: 2; padding: 60px 20px; max-width: 860px; width: 100%; }
         .hero h1 { color: #ffffff; }
 
-        /* ══════════════════════════════════════
-           REVEAL
-        ══════════════════════════════════════ */
         .reveal {
             opacity: 0; transform: translateY(30px);
             transition: opacity 0.7s cubic-bezier(0.2,0.8,0.2,1), transform 0.7s cubic-bezier(0.2,0.8,0.2,1);
@@ -461,9 +424,6 @@
         .reveal-delay-2 { transition-delay: 0.2s; }
         .reveal-delay-3 { transition-delay: 0.3s; }
 
-        /* ══════════════════════════════════════
-           ФЛЕШ
-        ══════════════════════════════════════ */
         .flash-message {
             border-radius: 12px; border-left: 3px solid var(--success);
             background: rgba(107,138,92,0.12); color: var(--text-primary);
@@ -473,29 +433,18 @@
         .flash-error { border-left-color: var(--error); background: rgba(196,86,83,0.12); }
         @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* ══════════════════════════════════════
-           ФУТЕР
-        ══════════════════════════════════════ */
         .footer-bg {
             background: linear-gradient(135deg, var(--forest-dark), #1f2a1c);
             border-top: 1px solid rgba(0,0,0,0.2);
             color: #f5efe0;
         }
 
-        /* ══════════════════════════════════════
-           СКРОЛЛБАР
-        ══════════════════════════════════════ */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: var(--bg-page); }
         ::-webkit-scrollbar-thumb { background: var(--border-medium); border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--brown); }
         html { scroll-behavior: smooth; }
 
-        /* ══════════════════════════════════════
-           АДАПТИВ — КЛЮЧЕВЫЕ БРЕЙКПОИНТЫ
-        ══════════════════════════════════════ */
-
-        /* Скрыть бургер на десктопе */
         @media (min-width: 901px) {
             .burger-btn { display: none !important; }
             .desktop-nav { display: flex !important; }
@@ -503,7 +452,7 @@
             .mobile-menu { display: none !important; }
         }
 
-        /* Показать бургер на ≤ 900px */
+
         @media (max-width: 900px) {
             .burger-btn { display: flex !important; }
             .desktop-nav { display: none !important; }
@@ -511,31 +460,28 @@
 
             .workspace { padding-left: 20px; padding-right: 20px; }
 
-            /* Форум — убрать сайдбар */
+
             .forum-layout { grid-template-columns: 1fr !important; }
             .forum-sidebar { display: none !important; }
 
-            /* Профиль — стопка */
+
             .profile-layout { grid-template-columns: 1fr !important; }
             .profile-sidebar { position: static !important; }
 
-            /* Новости — убрать сайдбар */
+
             .news-layout { grid-template-columns: 1fr !important; }
             .news-sidebar { display: none !important; }
 
-            /* Услуги — убрать сайдбар */
+
             .services-layout { grid-template-columns: 1fr !important; }
 
-            /* Фильтры форума в столбец */
             .forum-filters { flex-direction: column !important; align-items: flex-start !important; }
             .forum-found { margin-top: 8px !important; }
 
-            /* Секции главной */
             .home-section-grid { grid-template-columns: 1fr !important; }
             .home-features { grid-template-columns: 1fr 1fr !important; }
             .gallery-grid { grid-template-columns: 1fr 1fr !important; }
 
-            /* Карточка услуги */
             .service-card-inner { flex-direction: column !important; }
             .service-card-img { width: 100% !important; height: 200px !important; }
         }
@@ -554,14 +500,11 @@
 
             .btn { padding: 9px 18px; font-size: 10px; }
 
-            /* Вкладки профиля — прокрутка */
             .profile-tabs { overflow-x: auto !important; flex-wrap: nowrap !important; padding-bottom: 4px; }
             .tab-btn { white-space: nowrap; padding: 8px 12px !important; font-size: 9px !important; flex-shrink: 0 !important; }
 
-            /* Статистика профиля */
             .profile-stats-grid { grid-template-columns: 1fr 1fr !important; }
 
-            /* Тема форума — убрать боковую колонку автора на мобиле */
             .theme-author-col { width: auto !important; min-width: 0 !important; }
 
             .py-24 { padding-top: 40px !important; padding-bottom: 40px !important; }
@@ -572,14 +515,12 @@
             .modal-card { padding: 24px 18px; border-radius: 14px; }
         }
 
-        /* Маленький телефон ≤ 375px */
         @media (max-width: 375px) {
             .workspace { padding-left: 12px; padding-right: 12px; }
             .profile-tabs { gap: 2px !important; }
             .tab-btn { padding: 7px 10px !important; font-size: 8px !important; }
         }
 
-        /* Пагинация */
         nav[role="navigation"] svg { width: 16px; height: 16px; }
         nav[role="navigation"] { color: var(--text-secondary); }
     </style>
@@ -587,14 +528,12 @@
 
 <body class="mode-@yield('mode', 'sand')">
 
-{{-- ШАПКА --}}
 <header class="green-header">
     <div class="workspace">
         <div class="header-inner">
 
             <a href="{{ route('home') }}" class="header-logo">TerraForum</a>
 
-            {{-- Десктоп навигация --}}
             <nav class="desktop-nav">
                 <a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}">Главная</a>
                 <a href="{{ route('forum.index') }}" class="nav-link {{ request()->routeIs('forum.*') ? 'active' : '' }}">Форум</a>
@@ -602,7 +541,6 @@
                 <a href="{{ route('services.index') }}" class="nav-link {{ request()->routeIs('services.*') ? 'active' : '' }}">Услуги</a>
             </nav>
 
-            {{-- Десктоп авторизация --}}
             <div class="desktop-auth">
                 @auth
                     @php $unreadCount = auth()->user()->unreadNotifications->count(); @endphp
@@ -628,14 +566,12 @@
                 @endauth
             </div>
 
-            {{-- Бургер --}}
             <button class="burger-btn" id="burger" aria-label="Меню" type="button">
                 <span></span><span></span><span></span>
             </button>
         </div>
     </div>
 
-    {{-- Мобильное меню --}}
     <nav class="mobile-menu" id="mobile-menu">
         <a href="{{ route('home') }}" class="mobile-nav-link {{ request()->routeIs('home') ? 'active' : '' }}">Главная</a>
         <a href="{{ route('forum.index') }}" class="mobile-nav-link {{ request()->routeIs('forum.*') ? 'active' : '' }}">Форум</a>
@@ -661,7 +597,6 @@
     </nav>
 </header>
 
-{{-- ФЛЕШ --}}
 @if(session('success'))
     <div class="workspace" style="padding-top: 16px;">
         <div class="flash-message">✓ {{ session('success') }}</div>
@@ -675,7 +610,6 @@
 
 <main>@yield('content')</main>
 
-{{-- ФУТЕР --}}
 <footer class="footer-bg" style="padding: 40px 0; margin-top: 64px;">
     <div class="workspace" style="text-align: center;">
         <div style="font-family:'Karelle',serif;letter-spacing:3px;font-size:1rem;text-transform:uppercase;margin-bottom:12px;">TerraForum</div>

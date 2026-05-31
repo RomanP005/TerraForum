@@ -21,7 +21,7 @@
                   enctype="multipart/form-data" class="space-y-6 card-flat p-6 reveal">
                 @csrf
 
-                {{-- Название --}}
+
                 <div>
                     <label class="block text-xs uppercase tracking-widest text-secondary-c mb-2" style="letter-spacing: 2px;">
                         Название услуги
@@ -32,7 +32,6 @@
                     @error('title')<p class="mt-1 text-xs" style="color: var(--error);">{{ $message }}</p>@enderror
                 </div>
 
-                {{-- Категория --}}
                 <div>
                     <label class="block text-xs uppercase tracking-widest text-secondary-c mb-2" style="letter-spacing: 2px;">
                         Категория
@@ -49,7 +48,6 @@
                     @error('service_category')<p class="mt-1 text-xs" style="color: var(--error);">{{ $message }}</p>@enderror
                 </div>
 
-                {{-- Описание --}}
                 <div>
                     <label class="block text-xs uppercase tracking-widest text-secondary-c mb-2" style="letter-spacing: 2px;">
                         Описание
@@ -61,7 +59,6 @@
                     @error('description')<p class="mt-1 text-xs" style="color: var(--error);">{{ $message }}</p>@enderror
                 </div>
 
-                {{-- Цена --}}
                 <div class="grid md:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs uppercase tracking-widest text-secondary-c mb-2" style="letter-spacing: 2px;">
@@ -86,7 +83,6 @@
                     </div>
                 </div>
 
-                {{-- Договорная --}}
                 <div>
                     <label class="flex items-center gap-2 cursor-pointer">
                         <input type="checkbox" name="price_negotiable" value="1"
@@ -96,7 +92,6 @@
                     </label>
                 </div>
 
-                {{-- Регион и город --}}
                 <div class="grid md:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs uppercase tracking-widest text-secondary-c mb-2" style="letter-spacing: 2px;">
@@ -117,7 +112,6 @@
                     </div>
                 </div>
 
-                {{-- Телефон --}}
                 <div>
                     <label class="block text-xs uppercase tracking-widest text-secondary-c mb-2" style="letter-spacing: 2px;">
                         Телефон <span class="normal-case opacity-60">(необязательно)</span>
@@ -127,7 +121,6 @@
                            class="input-field w-full px-3 py-2 text-sm">
                 </div>
 
-                {{-- Фотографии --}}
                 <div>
                     <label class="block text-xs uppercase tracking-widest text-secondary-c mb-2" style="letter-spacing: 2px;">
                         Фотографии <span class="normal-case opacity-60">(до 5 штук)</span>
@@ -138,7 +131,6 @@
                     <p class="text-xs mt-1 text-muted-c">JPEG / PNG / WebP до 5 МБ каждый</p>
                 </div>
 
-                {{-- Предупреждение --}}
                 <div class="rounded-xl p-4 text-sm"
                      style="background: rgba(107, 138, 92, 0.12); border: 1px solid rgba(107, 138, 92, 0.3); color: var(--text-secondary);">
                     ℹ После отправки объявление будет проверено модератором и появится в каталоге.

@@ -3,7 +3,6 @@
 @section('mode', 'earth')
 @section('content')
 
-    {{-- Заголовок --}}
     <section style="background: var(--bg-section-alt); padding: 48px 0 32px;">
         <div class="workspace" style="text-align: center;" class="reveal">
             <div class="divider" style="margin-bottom: 16px;"><span>обсуждения</span></div>
@@ -14,7 +13,6 @@
         </div>
     </section>
 
-    {{-- Поиск --}}
     <section style="padding: 0 0 24px; position: relative; z-index: 10; margin-top: -20px;">
         <div class="workspace">
             <div class="card-flat" style="padding: 20px;">
@@ -65,11 +63,9 @@
         </div>
     </section>
 
-    {{-- Список тем --}}
     <section style="padding-bottom: 48px;">
         <div class="workspace">
 
-            {{-- Сортировка --}}
             <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 20px;">
                 <span class="text-muted-c" style="font-size: 11px; letter-spacing: 2px; text-transform: uppercase;">Сортировать:</span>
                 @php $sortOptions = ['latest' => 'Новые', 'popular' => 'Популярные', 'active' => 'Активные']; @endphp
@@ -85,10 +81,8 @@
             </span>
             </div>
 
-            {{-- Сетка --}}
             <div class="forum-layout" style="display: grid; grid-template-columns: 1fr 280px; gap: 20px;">
 
-                {{-- Темы --}}
                 <div style="min-width: 0;">
                     @forelse($themes as $theme)
                         <article class="card reveal" style="padding: 20px; display: flex; gap: 16px; margin-bottom: 12px;">
@@ -149,7 +143,6 @@
                     @endif
                 </div>
 
-                {{-- Сайдбар --}}
                 <aside class="forum-sidebar" style="min-width: 0;">
                     <div class="card-flat" style="padding: 20px; margin-bottom: 16px;">
                         <div class="divider" style="margin-bottom: 16px;"><span>категории</span></div>

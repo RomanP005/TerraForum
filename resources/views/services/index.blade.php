@@ -4,7 +4,6 @@
 
 @section('content')
 
-    {{-- Hero --}}
     <section style="background: radial-gradient(ellipse at 60% 40%, #7a8c6e 0%, #5a6b52 35%, #4a5c44 60%, #3d4f38 100%); padding: 64px 24px; text-align: center; color: #f5efe0;">
         <div class="divider mb-4 reveal" style="color: rgba(245,239,224,0.6);"><span>каталог</span></div>
         <h1 class="reveal reveal-delay-1" style="font-family: 'Karelle', serif; font-size: clamp(2rem, 5vw, 3.5rem); font-weight: normal; color: #f5efe0; margin-bottom: 0.75rem;">
@@ -24,11 +23,9 @@
         @endauth
     </section>
 
-    {{-- Фильтры + список --}}
     <section class="py-10 px-6">
         <div class="workspace">
 
-            {{-- Панель фильтров --}}
             <div class="card-flat p-5 mb-8 reveal">
                 <form action="{{ route('services.index') }}" method="GET" class="flex flex-col md:flex-row gap-3">
                     <select name="category" class="input-field px-3 py-2 text-sm flex-1">
@@ -53,12 +50,10 @@
                 </form>
             </div>
 
-            {{-- Сетка услуг --}}
             @forelse($services as $service)
                 <article class="card mb-4 overflow-hidden reveal">
                     <div class="flex flex-col md:flex-row">
 
-                        {{-- Фото --}}
                         @if($service->getFirstMediaUrl('photos', 'thumb'))
                             <a href="{{ route('services.show', $service->slug) }}"
                                class="block md:w-56 flex-shrink-0 overflow-hidden" style="min-height: 160px;">
@@ -69,7 +64,6 @@
                         @endif
 
                         <div class="p-6 flex-1">
-                            {{-- Категория + регион --}}
                             <div class="flex flex-wrap items-center gap-2 mb-3">
                                 @if($service->service_category)
                                     <span class="badge badge-forest">{{ $service->service_category }}</span>
@@ -81,19 +75,16 @@
                                 @endif
                             </div>
 
-                            {{-- Заголовок --}}
                             <h2 class="text-2xl mb-2">
                                 <a href="{{ route('services.show', $service->slug) }}" class="title-link">
                                     {{ $service->title }}
                                 </a>
                             </h2>
 
-                            {{-- Описание --}}
                             <p class="text-sm text-secondary-c leading-relaxed mb-4">
                                 {{ \Illuminate\Support\Str::limit($service->description, 180) }}
                             </p>
 
-                            {{-- Цена + автор --}}
                             <div class="flex items-center justify-between flex-wrap gap-2">
                                 <div class="text-brown font-medium" style="font-size: 1.1rem;">
                                     @if($service->price_negotiable)

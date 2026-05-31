@@ -6,10 +6,8 @@
     <div class="workspace" style="padding-top: 40px; padding-bottom: 40px;">
         <div class="profile-layout" style="display: grid; grid-template-columns: 300px 1fr; gap: 24px; align-items: start;">
 
-            {{-- САЙДБАР --}}
             <aside class="card profile-sidebar" style="padding: 24px; position: sticky; top: 80px;">
 
-                {{-- Аватар + имя --}}
                 <div style="display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 20px;">
                     <div class="avatar-square" style="width: 96px; height: 96px; margin-bottom: 16px;">
                         @if($user->getFirstMediaUrl('avatar'))
@@ -32,13 +30,11 @@
 
                 <div style="height: 1px; background: var(--border-soft); margin-bottom: 20px;"></div>
 
-                {{-- Репутация --}}
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
                     <span class="text-muted-c" style="font-size: 11px; letter-spacing: 2px; text-transform: uppercase;">Репутация</span>
                     <span class="gradient-number" style="font-size: 2.5rem; font-family: 'Karelle', serif;">{{ $user->rating ?? 0 }}</span>
                 </div>
 
-                {{-- Статистика --}}
                 <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 20px;">
                     @foreach([['Темы', $stats['themes']], ['Сообщения', $stats['posts']], ['Услуги', $stats['services']], ['Голоса', $stats['votes_given']]] as [$label, $val])
                         <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-radius: 8px; background: var(--bg-input);">
@@ -69,10 +65,8 @@
                 @endif
             </aside>
 
-            {{-- ОСНОВНАЯ ЧАСТЬ --}}
             <div style="min-width: 0;">
 
-                {{-- Вкладки --}}
                 <div class="card-flat profile-tabs" style="margin-bottom: 20px; padding: 6px; display: flex; gap: 4px; overflow-x: auto;">
                     @foreach($tabs as $key => $label)
                         <button id="tab-{{ $key }}"
@@ -84,7 +78,6 @@
                     @endforeach
                 </div>
 
-                {{-- АКТИВНОСТЬ --}}
                 <div id="panel-activity" class="tab-panel" style="display: flex; flex-direction: column; gap: 10px;">
                     @forelse($recentThemes as $theme)
                         <div class="card reveal" style="padding: 20px;">
@@ -108,7 +101,6 @@
                     @endforelse
                 </div>
 
-                {{-- ТЕМЫ --}}
                 <div id="panel-themes" class="tab-panel" style="display: none; flex-direction: column; gap: 10px;">
                     @forelse($allThemes as $theme)
                         <div class="card reveal" style="padding: 20px; display: flex; gap: 14px;">
@@ -145,7 +137,6 @@
                     @endif
                 </div>
 
-                {{-- ИЗБРАННОЕ --}}
                 <div id="panel-favorites" class="tab-panel" style="display: none; flex-direction: column; gap: 10px;">
                     @if($isOwner && $favorites->isNotEmpty())
                         @foreach($favorites as $item)
@@ -180,7 +171,6 @@
                     @endif
                 </div>
 
-                {{-- НАСТРОЙКИ --}}
                 @if($isOwner)
                     <div id="panel-settings" class="tab-panel" style="display: none; flex-direction: column; gap: 20px;">
 
@@ -191,7 +181,6 @@
                                 @csrf
                                 @method('PATCH')
 
-                                {{-- Аватар --}}
                                 <div>
                                     <label class="text-secondary-c" style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px;">Аватар</label>
                                     <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
