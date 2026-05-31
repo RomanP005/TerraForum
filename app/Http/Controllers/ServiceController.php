@@ -84,7 +84,6 @@ class ServiceController extends Controller
             'message.min'      => 'Сообщение слишком короткое',
         ]);
 
-        // Уведомить владельца услуги
         $service->user->notify(new \App\Notifications\ServiceContact(
             $service,
             auth()->user(),

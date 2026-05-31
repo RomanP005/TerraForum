@@ -41,14 +41,12 @@ class NewsController extends Controller
         $news->load(['author', 'media', 'tags']);
         $news->increment('views_count');
 
-        // Комментарии
         $comments = $news->comments()
             ->with('user')
             ->whereNull('parent_id')
             ->latest()
             ->get();
 
-        // Похожие новости
         $related = News::published()
             ->where('id', '!=', $news->id)
             ->where('news_category', $news->news_category)

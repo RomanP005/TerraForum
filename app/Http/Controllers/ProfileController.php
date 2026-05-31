@@ -61,7 +61,6 @@ class ProfileController extends Controller
         $favorites = collect();
         if ($isOwner) {
             try {
-                // Получаем сырые записи из таблицы favorites
                 $rawFavorites = \DB::table('favorites')
                     ->where('user_id', $user->id)
                     ->orderByDesc('created_at')
@@ -70,7 +69,6 @@ class ProfileController extends Controller
                 $result = collect();
 
                 foreach ($rawFavorites as $fav) {
-                    // Избранные ТЕМЫ
                     if ($fav->favoriteable_type === 'App\\Models\\Theme') {
                         $theme = \App\Models\Theme::with('category')->find($fav->favoriteable_id);
                         if ($theme) {
@@ -85,7 +83,6 @@ class ProfileController extends Controller
                         }
                     }
 
-                    // Избранные ОТВЕТЫ
                     if ($fav->favoriteable_type === 'App\\Models\\Post') {
                         $post = \App\Models\Post::with('theme')->find($fav->favoriteable_id);
                         if ($post && $post->theme) {
@@ -119,9 +116,6 @@ class ProfileController extends Controller
         ));
     }
 
-    /**
-     * Обновить профиль + аватар (с поддержкой delete_avatar).
-     */
     public function update(UpdateProfileRequest $request): RedirectResponse
     {
         $user = Auth::user();
@@ -132,12 +126,10 @@ class ProfileController extends Controller
             'region' => $validated['region'] ?? null,
         ]);
 
-        // Удалить аватар если запрошено
         if ($request->boolean('delete_avatar')) {
             $user->clearMediaCollection('avatar');
         }
 
-        // Загрузить новый аватар (заменяет текущий)
         if ($request->hasFile('avatar')) {
             $user->clearMediaCollection('avatar');
             $user->addMediaFromRequest('avatar')

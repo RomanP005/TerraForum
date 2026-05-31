@@ -8,9 +8,6 @@ use Illuminate\Http\RedirectResponse;
 
 class FavoriteController extends Controller
 {
-    /**
-     * Добавить/убрать тему из избранного.
-     */
     public function toggleTheme(Theme $theme): RedirectResponse
     {
         $user = auth()->user();
@@ -25,10 +22,6 @@ class FavoriteController extends Controller
 
         return back()->with('success', $message);
     }
-
-    /**
-     * Добавить/убрать ответ из избранного.
-     */
     public function togglePost(Post $post): RedirectResponse
     {
         $user = auth()->user();

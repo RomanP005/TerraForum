@@ -34,9 +34,6 @@ class LoginRequest extends FormRequest
         ];
     }
 
-    /**
-     * Попытка авторизации с проверкой rate limit.
-     */
     public function authenticate(): void
     {
         $this->ensureIsNotRateLimited();
@@ -52,9 +49,6 @@ class LoginRequest extends FormRequest
         RateLimiter::clear($this->throttleKey());
     }
 
-    /**
-     * Проверка лимита неудачных попыток входа (защита от брутфорса).
-     */
     public function ensureIsNotRateLimited(): void
     {
         if (! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
@@ -70,9 +64,6 @@ class LoginRequest extends FormRequest
         ]);
     }
 
-    /**
-     * Уникальный ключ для rate limiter (email + IP).
-     */
     public function throttleKey(): string
     {
         return Str::transliterate(Str::lower($this->string('email')) . '|' . $this->ip());

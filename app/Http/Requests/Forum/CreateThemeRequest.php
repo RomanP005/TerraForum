@@ -64,9 +64,6 @@ class CreateThemeRequest extends FormRequest
         ];
     }
 
-    /**
-     * При ошибке валидации — редирект назад с открытием модалки.
-     */
     protected function failedValidation(Validator $validator): void
     {
         throw new HttpResponseException(

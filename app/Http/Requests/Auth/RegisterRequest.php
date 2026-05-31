@@ -7,17 +7,12 @@ use Illuminate\Validation\Rules\Password;
 
 class RegisterRequest extends FormRequest
 {
-    /**
-     * Регистрация доступна всем (гостям).
-     */
+
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Правила валидации.
-     */
     public function rules(): array
     {
         return [
@@ -54,9 +49,6 @@ class RegisterRequest extends FormRequest
         ];
     }
 
-    /**
-     * Кастомные сообщения об ошибках.
-     */
     public function messages(): array
     {
         return [

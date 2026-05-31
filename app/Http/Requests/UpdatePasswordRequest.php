@@ -41,9 +41,6 @@ class UpdatePasswordRequest extends FormRequest
         ];
     }
 
-    /**
-     * Проверка, что текущий пароль введён правильно.
-     */
     public function withValidator(Validator $validator): void
     {
         $validator->after(function (Validator $validator) {

@@ -10,9 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    /**
-     * Обработать вход (форма модальная).
-     */
     public function store(LoginRequest $request): RedirectResponse
     {
         try {

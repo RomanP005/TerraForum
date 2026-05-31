@@ -54,7 +54,6 @@ class PostController extends Controller
 
         abort_unless(in_array($value, ['up', 'down']), 400);
 
-        // Получаем текущий голос пользователя
         $existingVote = DB::table('votes')
             ->where('user_id', $user->id)
             ->where('votable_id', $post->id)
@@ -77,7 +76,6 @@ class PostController extends Controller
             }
         }
 
-        // Ставим новый голос
         $value === 'up' ? $user->upvote($post) : $user->downvote($post);
 
         return back();
@@ -93,7 +91,6 @@ class PostController extends Controller
             403
         );
 
-        // Снять предыдущий лучший ответ
         $theme->posts()
             ->where('is_best_answer', true)
             ->update(['is_best_answer' => false]);
