@@ -31,8 +31,6 @@ class AdminPanelProvider extends PanelProvider
             ->authGuard('admin')
             ->authMiddleware([Authenticate::class])
 
-
-            // Автообнаружение всех ресурсов из папки
             ->discoverResources(
                 in: app_path('Filament/Resources'),
                 for: 'App\\Filament\\Resources'
@@ -46,14 +44,12 @@ class AdminPanelProvider extends PanelProvider
                 for: 'App\\Filament\\Widgets'
             )
 
-            // Группы навигации
             ->navigationGroups([
                 NavigationGroup::make('Контент'),
                 NavigationGroup::make('Модерация'),
                 NavigationGroup::make('Управление'),
             ])
 
-            // Доступ только для admin и moderator
             ->authMiddleware([Authenticate::class])
 
             ->middleware([
