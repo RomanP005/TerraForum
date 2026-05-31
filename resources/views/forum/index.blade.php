@@ -12,7 +12,6 @@
             </p>
         </div>
     </section>
-
     <section style="padding: 0 0 24px; position: relative; z-index: 10; margin-top: -20px;">
         <div class="workspace">
             <div class="card-flat" style="padding: 20px;">
@@ -36,7 +35,6 @@
                         @endcan @endauth
                     </div>
                 </form>
-
                 @if($search || $categorySlug || $selectedTags->isNotEmpty())
                     <div style="margin-top: 12px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 12px;">
                         <span class="text-muted-c" style="font-size: 11px; letter-spacing: 2px; text-transform: uppercase;">Фильтры:</span>
@@ -62,7 +60,6 @@
             </div>
         </div>
     </section>
-
     <section style="padding-bottom: 48px;">
         <div class="workspace">
 
@@ -80,9 +77,7 @@
                 Найдено: {{ $themes->total() }}
             </span>
             </div>
-
             <div class="forum-layout" style="display: grid; grid-template-columns: 1fr 280px; gap: 20px;">
-
                 <div style="min-width: 0;">
                     @forelse($themes as $theme)
                         <article class="card reveal" style="padding: 20px; display: flex; gap: 16px; margin-bottom: 12px;">

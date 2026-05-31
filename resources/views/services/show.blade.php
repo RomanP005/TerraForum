@@ -13,7 +13,6 @@
             </div>
         </div>
     </section>
-
     <section class="py-12 px-6">
         <div class="workspace">
             <div class="grid lg:grid-cols-[1fr_300px] gap-10">
@@ -29,7 +28,6 @@
                             @endforeach
                         </div>
                     @endif
-
                     <div class="flex flex-wrap items-center gap-3 mb-4">
                         @if($service->service_category)
                             <span class="badge badge-forest">{{ $service->service_category }}</span>

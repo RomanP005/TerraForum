@@ -100,7 +100,6 @@
             </div>
         </div>
     </section>
-
     <section class="py-24 px-6" style="background: var(--bg-section-alt);">
         <div class="workspace">
             <div class="grid md:grid-cols-2 gap-12 items-center">

@@ -16,7 +16,6 @@
             src: url('{{ asset('fonts/Karelle.otf') }}') format('opentype');
             font-display: swap;
         }
-
         :root {
             --forest: #3d4f33;
             --forest-dark: #2e3d27;
@@ -90,7 +89,6 @@
             padding-left: 24px;
             padding-right: 24px;
         }
-
         .green-header {
             background: linear-gradient(135deg, var(--forest) 0%, var(--forest-dark) 100%);
             border-bottom: 1px solid rgba(0,0,0,0.2);

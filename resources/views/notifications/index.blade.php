@@ -21,16 +21,13 @@
                     </form>
                 @endif
             </div>
-
             @forelse($notifications as $notification)
                 @php
                     $data = $notification->data;
                     $isRead = $notification->read_at !== null;
                 @endphp
-
                 <div class="card p-5 mb-3 flex gap-4 reveal"
                      style="{{ !$isRead ? 'border-left: 3px solid var(--brown);' : '' }}">
-
                     <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center"
                          style="background: {{
                          $data['type'] === 'reply' ? 'rgba(61,79,51,0.15)' :

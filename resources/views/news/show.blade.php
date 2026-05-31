@@ -16,7 +16,6 @@
             </div>
         </div>
     </section>
-
     <section class="py-12 px-6">
         <div class="workspace">
             <div class="grid lg:grid-cols-[1fr_280px] gap-12">

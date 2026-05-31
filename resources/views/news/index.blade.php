@@ -97,7 +97,6 @@
                         <div class="mt-8">{{ $news->links() }}</div>
                     @endif
                 </div>
-
                 <aside class="space-y-4">
                     <div class="card-flat p-5">
                         <div class="divider mb-4"><span>последние</span></div>

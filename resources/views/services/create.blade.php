@@ -16,12 +16,9 @@
                     Обычно это занимает не более нескольких часов.
                 </p>
             </div>
-
             <form action="{{ route('services.store') }}" method="POST"
                   enctype="multipart/form-data" class="space-y-6 card-flat p-6 reveal">
                 @csrf
-
-
                 <div>
                     <label class="block text-xs uppercase tracking-widest text-secondary-c mb-2" style="letter-spacing: 2px;">
                         Название услуги
@@ -31,7 +28,6 @@
                            class="input-field w-full px-3 py-2 text-sm @error('title') error @enderror">
                     @error('title')<p class="mt-1 text-xs" style="color: var(--error);">{{ $message }}</p>@enderror
                 </div>
-
                 <div>
                     <label class="block text-xs uppercase tracking-widest text-secondary-c mb-2" style="letter-spacing: 2px;">
                         Категория
@@ -47,7 +43,6 @@
                     </select>
                     @error('service_category')<p class="mt-1 text-xs" style="color: var(--error);">{{ $message }}</p>@enderror
                 </div>
-
                 <div>
                     <label class="block text-xs uppercase tracking-widest text-secondary-c mb-2" style="letter-spacing: 2px;">
                         Описание
@@ -58,7 +53,6 @@
                     <p class="text-xs mt-1 text-muted-c">Минимум 30 символов</p>
                     @error('description')<p class="mt-1 text-xs" style="color: var(--error);">{{ $message }}</p>@enderror
                 </div>
-
                 <div class="grid md:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs uppercase tracking-widest text-secondary-c mb-2" style="letter-spacing: 2px;">

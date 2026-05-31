@@ -22,7 +22,6 @@
             </div>
         </div>
     </section>
-
     <section class="py-10 px-6">
         <div class="workspace">
             <header class="mb-8 reveal">

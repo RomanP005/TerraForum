@@ -18,7 +18,6 @@
                             </div>
                         @endif
                     </div>
-
                     <div class="section-number" style="margin-bottom: 4px;">
                         @forelse($user->roles as $role) {{ $role->name }} @empty гость @endforelse
                     </div>
@@ -27,14 +26,11 @@
                         <p class="text-muted-c" style="font-size: 11px; letter-spacing: 2px; text-transform: uppercase; margin: 0;">{{ $user->region }}</p>
                     @endif
                 </div>
-
                 <div style="height: 1px; background: var(--border-soft); margin-bottom: 20px;"></div>
-
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
                     <span class="text-muted-c" style="font-size: 11px; letter-spacing: 2px; text-transform: uppercase;">Репутация</span>
                     <span class="gradient-number" style="font-size: 2.5rem; font-family: 'Karelle', serif;">{{ $user->rating ?? 0 }}</span>
                 </div>
-
                 <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 20px;">
                     @foreach([['Темы', $stats['themes']], ['Сообщения', $stats['posts']], ['Услуги', $stats['services']], ['Голоса', $stats['votes_given']]] as [$label, $val])
                         <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-radius: 8px; background: var(--bg-input);">

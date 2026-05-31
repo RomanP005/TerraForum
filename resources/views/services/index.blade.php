@@ -22,7 +22,6 @@
             </button>
         @endauth
     </section>
-
     <section class="py-10 px-6">
         <div class="workspace">
 
