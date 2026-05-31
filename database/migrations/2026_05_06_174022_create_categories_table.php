@@ -23,8 +23,7 @@ return new class extends Migration
             $table->foreignId('parent_id')
                 ->nullable()
                 ->constrained('categories')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+                ->cascadeOnDelete()->cascadeOnUpdate();
 
             $table->unsignedInteger('sort_order')->default(0);
             $table->boolean('is_active')->default(true);

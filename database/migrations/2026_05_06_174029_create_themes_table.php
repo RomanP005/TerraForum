@@ -20,14 +20,12 @@ return new class extends Migration
             // Автор темы
             $table->foreignId('user_id')
                 ->constrained('users')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+                ->cascadeOnDelete()->cascadeOnUpdate();
 
             // Категория темы
             $table->foreignId('category_id')
                 ->constrained('categories')
-                ->onUpdate('cascade')
-                ->onDelete('restrict');
+                ->cascadeOnDelete()->cascadeOnUpdate();
 
             // Статусы темы
             $table->boolean('is_pinned')->default(false);

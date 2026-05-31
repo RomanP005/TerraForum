@@ -101,7 +101,6 @@
         </div>
     </section>
 
-    {{-- ИСТОРИЯ 01 --}}
     <section class="py-24 px-6" style="background: var(--bg-section-alt);">
         <div class="workspace">
             <div class="grid md:grid-cols-2 gap-12 items-center">
@@ -129,7 +128,6 @@
         </div>
     </section>
 
-    {{-- ИСТОРИЯ 02 --}}
     <section class="py-24 px-6">
         <div class="workspace">
             <div class="grid md:grid-cols-2 gap-12 items-center">
@@ -157,7 +155,6 @@
         </div>
     </section>
 
-    {{-- ЦИТАТА --}}
     <section class="py-24 px-6" style="background: var(--bg-section-alt);">
         <div class="workspace text-center max-w-3xl mx-auto reveal">
             <div class="text-7xl mb-6 opacity-25 gradient-number" style="line-height: 0.5;">«</div>
@@ -170,7 +167,6 @@
         </div>
     </section>
 
-    {{-- ГАЛЕРЕЯ --}}
     <section class="py-24 px-6">
         <div class="workspace">
             <div class="text-center mb-12 reveal">
@@ -192,7 +188,6 @@
         </div>
     </section>
 
-    {{-- ПРИГЛАШЕНИЕ — ровный зелёный --}}
     <section class="py-24 px-6" style="background-color: #4a5c44;">
         <div class="workspace text-center reveal">
             <div class="divider mb-6" style="color: rgba(245, 239, 224, 0.6);">

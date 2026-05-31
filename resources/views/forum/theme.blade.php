@@ -5,7 +5,6 @@
 
 @section('content')
 
-    {{-- Хлебные крошки --}}
     <section class="py-4 px-6" style="background: var(--bg-section-alt);">
         <div class="workspace">
             <div class="flex flex-wrap items-center gap-2 text-xs uppercase tracking-widest text-muted-c" style="letter-spacing: 2px;">
@@ -24,7 +23,6 @@
         </div>
     </section>
 
-    {{-- Тема --}}
     <section class="py-10 px-6">
         <div class="workspace">
             <header class="mb-8 reveal">
@@ -39,7 +37,6 @@
 
             <article class="card-flat p-6 md:p-8 flex flex-col md:flex-row gap-6 mb-8 reveal">
 
-                {{-- Автор + голосование + избранное --}}
                 <div class="md:w-40 flex md:flex-col items-center gap-4 md:gap-3">
                     <a href="{{ route('profile.show', $theme->user->name) }}" class="avatar w-20 h-20">
                         @if($theme->user->getFirstMediaUrl('avatar'))
@@ -56,7 +53,6 @@
                         <div class="text-xs text-muted-c">Репутация: {{ $theme->user->rating ?? 0 }}</div>
                     </div>
 
-                    {{-- Голосование --}}
                     @auth
                         <div class="flex md:flex-col items-center gap-2 mt-2">
                             <form action="{{ route('forum.theme.vote', $theme->slug) }}" method="POST" class="inline">
@@ -72,7 +68,6 @@
                             </form>
                         </div>
 
-                        {{-- Кнопка избранного для темы --}}
                         <form action="{{ route('favorites.theme.toggle', $theme->slug) }}" method="POST" class="inline mt-2">
                             @csrf
                             @php $isFavorited = auth()->user()->hasFavorited($theme); @endphp
@@ -91,7 +86,6 @@
                     @endauth
                 </div>
 
-                {{-- Контент темы --}}
                 <div class="flex-1 min-w-0">
                     <div class="text-cream leading-relaxed whitespace-pre-line">{{ $theme->content }}</div>
 
@@ -118,7 +112,6 @@
         </div>
     </section>
 
-    {{-- Ответы --}}
     <section class="px-6 py-10" style="background: var(--bg-section-alt);">
         <div class="workspace">
             <div class="flex items-center justify-between mb-6">
@@ -154,7 +147,6 @@
                             <div class="text-xs text-muted-c">{{ $post->user->rating ?? 0 }}</div>
                         </div>
 
-                        {{-- Голосование за ответ --}}
                         @auth
                             <div class="flex md:flex-col items-center gap-1">
                                 <form action="{{ route('forum.post.vote', $post->id) }}" method="POST" class="inline">
@@ -170,7 +162,6 @@
                                 </form>
                             </div>
 
-                            {{-- Кнопка избранного для ответа --}}
                             <form action="{{ route('favorites.post.toggle', $post->id) }}" method="POST" class="inline">
                                 @csrf
                                 @php $isPostFavorited = auth()->user()->hasFavorited($post); @endphp
@@ -186,7 +177,6 @@
                         @endauth
                     </div>
 
-                    {{-- Контент ответа --}}
                     <div class="flex-1 min-w-0">
                         <div class="text-xs uppercase tracking-widest text-muted-c mb-3" style="letter-spacing: 2px;">
                             {{ $post->created_at->translatedFormat('j F Y, H:i') }}
@@ -228,7 +218,6 @@
         </div>
     </section>
 
-    {{-- Форма ответа --}}
     @auth
         @if(! $theme->is_closed)
             @can('create posts')

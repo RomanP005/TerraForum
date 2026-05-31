@@ -6,9 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateVotesTable extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+
     public function up()
     {
         Schema::create(config('vote.votes_table'), function (Blueprint $table) {
@@ -20,9 +18,6 @@ class CreateVotesTable extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down()
     {
         Schema::dropIfExists(config('vote.votes_table'));

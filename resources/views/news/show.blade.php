@@ -5,7 +5,6 @@
 
 @section('content')
 
-    {{-- Хлебные крошки --}}
     <section class="py-4 px-6" style="background: var(--bg-section-alt);">
         <div class="workspace">
             <div class="flex flex-wrap items-center gap-2 text-xs uppercase tracking-widest text-muted-c" style="letter-spacing: 2px;">
@@ -22,10 +21,8 @@
         <div class="workspace">
             <div class="grid lg:grid-cols-[1fr_280px] gap-12">
 
-                {{-- Статья --}}
                 <article>
 
-                    {{-- Обложка --}}
                     @if($news->getFirstMediaUrl('cover'))
                         <div class="overflow-hidden rounded-2xl mb-8" style="box-shadow: var(--shadow-hover); max-height: 480px;">
                             <img src="{{ $news->getFirstMediaUrl('cover') }}"
@@ -34,7 +31,6 @@
                         </div>
                     @endif
 
-                    {{-- Мета --}}
                     <div class="flex flex-wrap items-center gap-3 mb-4">
                         @if($news->news_category)
                             <span class="badge badge-forest">{{ $news->news_category }}</span>
@@ -45,10 +41,8 @@
                         <span class="text-xs text-muted-c">{{ $news->views_count }} просмотров</span>
                     </div>
 
-                    {{-- Заголовок --}}
                     <h1 class="text-4xl md:text-5xl mb-4 reveal" style="line-height: 1.15;">{{ $news->title }}</h1>
 
-                    {{-- Автор --}}
                     <div class="flex items-center gap-3 mb-8 pb-6" style="border-bottom: 1px solid var(--border-soft);">
                         <div class="w-10 h-10 rounded-full overflow-hidden flex-shrink-0" style="background: var(--forest);">
                             @if($news->author?->getFirstMediaUrl('avatar'))
@@ -67,19 +61,16 @@
                         </div>
                     </div>
 
-                    {{-- Аннотация --}}
                     @if($news->excerpt)
                         <p class="text-lg mb-6 leading-relaxed" style="color: var(--text-secondary); border-left: 3px solid var(--brown); padding-left: 1rem;">
                             {{ $news->excerpt }}
                         </p>
                     @endif
 
-                    {{-- Контент --}}
                     <div class="leading-relaxed whitespace-pre-line" style="color: var(--text-primary); font-size: 1rem; line-height: 1.8;">
                         {!! $news->content !!}
                     </div>
 
-                    {{-- Теги --}}
                     @if($news->tags->isNotEmpty())
                         <div class="flex flex-wrap gap-2 mt-8 pt-6" style="border-top: 1px solid var(--border-soft);">
                             @foreach($news->tags as $tag)
@@ -87,8 +78,6 @@
                             @endforeach
                         </div>
                     @endif
-
-                    {{-- Комментарии --}}
                     <div class="mt-12">
                         <div class="divider mb-6"><span>комментарии ({{ $comments->count() }})</span></div>
 
@@ -138,7 +127,6 @@
                     </div>
                 </article>
 
-                {{-- Сайдбар --}}
                 <aside class="space-y-4 lg:sticky lg:top-24 lg:self-start">
                     @if($related->isNotEmpty())
                         <div class="card-flat p-5">

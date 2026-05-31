@@ -31,7 +31,6 @@
                 <div class="card p-5 mb-3 flex gap-4 reveal"
                      style="{{ !$isRead ? 'border-left: 3px solid var(--brown);' : '' }}">
 
-                    {{-- Иконка типа --}}
                     <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center"
                          style="background: {{
                          $data['type'] === 'reply' ? 'rgba(61,79,51,0.15)' :
@@ -70,7 +69,6 @@
                         </div>
                     </div>
 
-                    {{-- Удалить --}}
                     <form action="{{ route('notifications.destroy', $notification->id) }}" method="POST" class="flex-shrink-0">
                         @csrf
                         @method('DELETE')

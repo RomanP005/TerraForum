@@ -4,7 +4,6 @@
 
 @section('content')
 
-    {{-- Хлебные крошки --}}
     <section class="py-4 px-6" style="background: var(--bg-section-alt);">
         <div class="workspace">
             <div class="flex flex-wrap items-center gap-2 text-xs uppercase tracking-widest text-muted-c" style="letter-spacing: 2px;">
@@ -18,11 +17,7 @@
     <section class="py-12 px-6">
         <div class="workspace">
             <div class="grid lg:grid-cols-[1fr_300px] gap-10">
-
-                {{-- Основная часть --}}
                 <article>
-
-                    {{-- Фотогалерея --}}
                     @if($service->getMedia('photos')->isNotEmpty())
                         <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-8 reveal">
                             @foreach($service->getMedia('photos') as $photo)
@@ -35,7 +30,6 @@
                         </div>
                     @endif
 
-                    {{-- Мета --}}
                     <div class="flex flex-wrap items-center gap-3 mb-4">
                         @if($service->service_category)
                             <span class="badge badge-forest">{{ $service->service_category }}</span>
@@ -47,12 +41,10 @@
                         @endif
                     </div>
 
-                    {{-- Заголовок --}}
                     <h1 class="text-4xl md:text-5xl mb-4 reveal" style="line-height: 1.15;">
                         {{ $service->title }}
                     </h1>
 
-                    {{-- Цена --}}
                     <div class="mb-6 reveal">
                         <div class="text-3xl gradient-number" style="font-family: 'Karelle', serif;">
                             @if($service->price_negotiable)
@@ -65,7 +57,6 @@
                         </div>
                     </div>
 
-                    {{-- Описание --}}
                     <div class="divider mb-6"><span>описание</span></div>
                     <div class="text-secondary-c leading-relaxed whitespace-pre-line mb-8 reveal">
                         {{ $service->description }}
@@ -73,10 +64,8 @@
 
                 </article>
 
-                {{-- Сайдбар --}}
                 <aside class="space-y-4 lg:sticky lg:top-24 lg:self-start">
 
-                    {{-- Карточка исполнителя --}}
                     <div class="card-flat p-6">
                         <div class="divider mb-4"><span>исполнитель</span></div>
 
@@ -144,7 +133,6 @@
                         </a>
                     </div>
 
-                    {{-- Похожие --}}
                     @if($related->isNotEmpty())
                         <div class="card-flat p-5">
                             <div class="divider mb-4"><span>похожие</span></div>

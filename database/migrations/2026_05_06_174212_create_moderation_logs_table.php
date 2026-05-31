@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -15,7 +14,7 @@ return new class extends Migration
             $table->id();
 
             // Кто совершил действие
-            $table->foreignId('moderator_id')
+            $table->foreignId('moderator_id')->cascadeOnDelete()->cascadeOnUpdate()
                 ->constrained('users')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
@@ -32,8 +31,8 @@ return new class extends Migration
             $table->foreignId('affected_user_id')
                 ->nullable()
                 ->constrained('users')
-                ->onUpdate('cascade')
-                ->onDelete('set null');
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
 
             $table->text('reason')->nullable();
             $table->json('metadata')->nullable()->comment('JSON с до/после изменения');

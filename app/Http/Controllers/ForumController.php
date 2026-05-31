@@ -115,7 +115,6 @@ class ForumController extends Controller
 
         abort_unless(in_array($value, ['up', 'down']), 400);
 
-        // Проверяем текущий голос пользователя
         $existingVote = \DB::table('votes')
             ->where('user_id', $user->id)
             ->where('votable_id', $theme->id)
@@ -128,7 +127,6 @@ class ForumController extends Controller
                 || ($existingVote->votes === -1 && $value === 'down');
 
             if ($isSameVote) {
-                // Тот же голос — удаляем запись (возврат к 0)
                 \DB::table('votes')
                     ->where('user_id', $user->id)
                     ->where('votable_id', $theme->id)
@@ -139,7 +137,6 @@ class ForumController extends Controller
             }
         }
 
-        // Ставим новый голос
         $value === 'up' ? $user->upvote($theme) : $user->downvote($theme);
 
         return back();

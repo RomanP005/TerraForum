@@ -18,8 +18,7 @@ return new class extends Migration
             // Автор комментария
             $table->foreignId('user_id')
                 ->constrained('users')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+                ->cascadeOnDelete()->cascadeOnUpdate();
 
             // Полиморфная связь — комментарий относится к новости / услуге / посту
             $table->morphs('commentable');
@@ -28,8 +27,7 @@ return new class extends Migration
             $table->foreignId('parent_id')
                 ->nullable()
                 ->constrained('comments')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+                ->cascadeOnDelete()->cascadeOnUpdate();
 
             // Краткая оценка для отзывов на новости/услуги (1-5)
             // Голоса лайк/дизлайк на сам комментарий — через laravel-vote

@@ -21,8 +21,7 @@ return new class extends Migration
             // Автор - администратор
             $table->foreignId('user_id')
                 ->constrained('users')
-                ->onUpdate('cascade')
-                ->onDelete('restrict');
+                ->cascadeOnDelete()->cascadeOnUpdate();
 
             // Категория новости (агрономия, погода, рынок и т.д.)
             $table->string('news_category', 100)->nullable();

@@ -18,21 +18,18 @@ return new class extends Migration
             // Автор сообщения
             $table->foreignId('user_id')
                 ->constrained('users')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+                ->cascadeOnDelete()->cascadeOnUpdate();
 
             // Тема, к которой относится сообщение
             $table->foreignId('theme_id')
                 ->constrained('themes')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+                ->cascadeOnDelete()->cascadeOnUpdate();
 
             // Ответ на конкретное сообщение (древовидная структура)
             $table->foreignId('parent_post_id')
                 ->nullable()
                 ->constrained('posts')
-                ->onUpdate('cascade')
-                ->onDelete('set null');
+                ->cascadeOnDelete()->cascadeOnUpdate();
 
             // ПРИМЕЧАНИЕ:
             // - вложения (фото) — через spatie/laravel-medialibrary
