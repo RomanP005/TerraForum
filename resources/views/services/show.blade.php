@@ -67,82 +67,59 @@
 
                 <aside class="space-y-4 lg:sticky lg:top-24 lg:self-start">
 
-                    <div class="card-flat p-6">
-                        <div class="divider mb-4"><span>исполнитель</span></div>
+                    <div class="card-flat" style="padding: 20px;">
+                        <div class="divider" style="margin-bottom: 16px;"><span>исполнитель</span></div>
 
-                        <div class="flex items-center gap-3 mb-4">
-                            <a href="{{ route('profile.show', $service->user->name) }}" class="avatar w-14 h-14">
-                                @if($service->user->getFirstMediaUrl('avatar', 'thumb'))
-                                    <img src="{{ $service->user->getFirstMediaUrl('avatar', 'thumb') }}" alt="" class="w-full h-full object-cover">
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                            <a href="{{ route('profile.show', $service->user->name) }}"
+                               class="avatar" style="width: 48px; height: 48px; flex-shrink: 0;">
+                                @if($service->user->getFirstMediaUrl('avatar'))
+                                    <img src="{{ $service->user->getFirstMediaUrl('avatar') }}"
+                                         alt="" style="width: 100%; height: 100%; object-fit: cover;">
                                 @else
-                                    <div class="avatar-fallback" style="font-size: 22px;">
+                                    <div class="avatar-fallback" style="font-size: 20px;">
                                         {{ mb_strtoupper(mb_substr($service->user->name, 0, 1)) }}
                                     </div>
                                 @endif
                             </a>
-                            @auth
-                                @if(auth()->id() !== $service->user_id)
-                                    <a href="{{ route('payment.show', $service->slug) }}" class="btn btn-filled w-full text-center"
-                                       style="display: block; margin-top: 10px;">
-                                        Оплатить услугу
-                                    </a>
-                                @endif
-                            @else
-                                <button type="button" onclick="openModal('login-modal')"
-                                        class="btn btn-filled w-full text-center"
-                                        style="margin-top: 10px;">
-                                    Войти для оплаты
-                                </button>
-                            @endauth
                             <div>
-                                <a href="{{ route('profile.show', $service->user->name) }}" class="title-link text-base font-medium">
+                                <a href="{{ route('profile.show', $service->user->name) }}"
+                                   class="title-link" style="font-size: 15px; font-weight: 500; display: block;">
                                     {{ $service->user->name }}
                                 </a>
-                                <div class="text-xs text-muted-c">
+                                <div class="text-muted-c" style="font-size: 12px;">
                                     Репутация: {{ $service->user->rating ?? 0 }}
                                 </div>
                             </div>
                         </div>
+
                         @auth
                             @if(auth()->id() !== $service->user_id)
-                                <div class="card-flat p-5">
-                                    <div class="divider mb-4"><span>связаться</span></div>
-                                    <form action="{{ route('services.contact', $service->slug) }}" method="POST" class="space-y-3">
-                                        @csrf
-                                        <textarea name="message" rows="4" required
-                                                  placeholder="Опишите что вас интересует..."
-                                                  class="input-field w-full px-3 py-2 text-sm @error('message') error @enderror">{{ old('message') }}</textarea>
-                                        @error('message')
-                                        <p class="text-xs" style="color: var(--error);">{{ $message }}</p>
-                                        @enderror
-                                        <button type="submit" class="btn btn-filled w-full">
-                                            Отправить сообщение
-                                        </button>
-                                    </form>
-                                    <p class="text-xs text-muted-c mt-3 text-center">
-                                        Исполнитель получит уведомление на платформе
-                                    </p>
-                                </div>
+                                <a href="{{ route('payment.show', $service->slug) }}"
+                                   class="btn btn-filled"
+                                   style="display: block; width: 100%; text-align: center; margin-bottom: 10px;">
+                                    Оплатить услугу
+                                </a>
                             @endif
                         @else
-                            <div class="card-flat p-5">
-                                <div class="divider mb-4"><span>связаться</span></div>
-                                <p class="text-sm text-secondary-c mb-3 text-center">
-                                    Войдите чтобы написать исполнителю
-                                </p>
-                                <button type="button" onclick="openModal('login-modal')" class="btn btn-filled w-full">
-                                    Войти
-                                </button>
-                            </div>
+                            <button type="button" onclick="openModal('login-modal')"
+                                    class="btn btn-filled"
+                                    style="display: block; width: 100%; text-align: center; margin-bottom: 10px;">
+                                Войти для оплаты
+                            </button>
                         @endauth
+
                         @if($service->phone)
-                            <div class="py-3 px-4 rounded-lg mb-3" style="background: var(--bg-input); border: 1px solid var(--border-medium);">
-                                <div class="text-xs uppercase tracking-widest text-muted-c mb-1" style="letter-spacing: 2px;">Телефон</div>
-                                <div class="text-base font-medium">{{ $service->phone }}</div>
+                            <div style="padding: 12px 14px; border-radius: 10px; margin-bottom: 10px;
+                    background: var(--bg-input); border: 1px solid var(--border-medium);">
+                                <div class="text-muted-c" style="font-size: 10px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px;">Телефон</div>
+                                <div style="font-size: 15px; font-weight: 500;">{{ $service->phone }}</div>
                             </div>
                         @endif
 
-                        <a href="{{ route('profile.show', $service->user->name) }}" class="btn btn-ghost w-full text-center">
+                        <a href="{{ route('profile.show', $service->user->name) }}"
+                           class="btn btn-ghost"
+                           style="display: block; width: 100%; text-align: center;">
                             Профиль исполнителя
                         </a>
                     </div>

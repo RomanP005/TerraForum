@@ -226,35 +226,85 @@
                         <div class="card-flat" style="padding: 24px;">
                             <div class="divider" style="margin-bottom: 24px;"><span>безопасность</span></div>
 
-                            <form action="{{ route('profile.password.update') }}" method="POST" style="display: flex; flex-direction: column; gap: 16px;">
+                            <form action="{{ route('profile.password.update') }}" method="POST"
+                                  style="display: flex; flex-direction: column; gap: 16px;">
                                 @csrf
                                 @method('PATCH')
 
                                 <div>
-                                    <label for="current_password" class="text-secondary-c" style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px;">Текущий пароль</label>
-                                    <input type="password" id="current_password" name="current_password" required autocomplete="current-password"
-                                           class="input-field @error('current_password') error @enderror" style="padding: 10px 14px;">
-                                    @error('current_password')<p style="font-size: 11px; color: var(--error); margin-top: 4px;">{{ $message }}</p>@enderror
+                                    <label class="text-secondary-c"
+                                           style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px;">
+                                        Текущий пароль
+                                    </label>
+                                    <div style="position: relative;">
+                                        <input type="password" name="current_password" id="cur-pass"
+                                               required autocomplete="current-password"
+                                               class="input-field @error('current_password') error @enderror"
+                                               style="padding: 10px 44px 10px 14px; width: 100%;">
+                                        <button type="button" onclick="togglePassword('cur-pass','eye-cur')"
+                                                style="position:absolute;right:12px;top:50%;transform:translateY(-50%);
+                               background:transparent;border:none;cursor:pointer;
+                               color:var(--text-muted);font-size:16px;padding:4px;line-height:1;"
+                                                tabindex="-1">
+                                            <span id="eye-cur">👁</span>
+                                        </button>
+                                    </div>
+                                    @error('current_password')
+                                    <p style="font-size: 11px; color: var(--error); margin-top: 4px;">{{ $message }}</p>
+                                    @enderror
                                 </div>
 
                                 <div>
-                                    <label for="new_password" class="text-secondary-c" style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px;">Новый пароль</label>
-                                    <input type="password" id="new_password" name="password" required autocomplete="new-password"
-                                           class="input-field @error('password') error @enderror" style="padding: 10px 14px;">
-                                    <p class="text-muted-c" style="font-size: 11px; margin-top: 4px;">Минимум 8 символов, буквы и цифры</p>
-                                    @error('password')<p style="font-size: 11px; color: var(--error); margin-top: 4px;">{{ $message }}</p>@enderror
+                                    <label class="text-secondary-c"
+                                           style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px;">
+                                        Новый пароль
+                                    </label>
+                                    <div style="position: relative;">
+                                        <input type="password" name="password" id="new-pass"
+                                               required autocomplete="new-password"
+                                               class="input-field @error('password') error @enderror"
+                                               style="padding: 10px 44px 10px 14px; width: 100%;">
+                                        <button type="button" onclick="togglePassword('new-pass','eye-new')"
+                                                style="position:absolute;right:12px;top:50%;transform:translateY(-50%);
+                               background:transparent;border:none;cursor:pointer;
+                               color:var(--text-muted);font-size:16px;padding:4px;line-height:1;"
+                                                tabindex="-1">
+                                            <span id="eye-new">👁</span>
+                                        </button>
+                                    </div>
+                                    <p class="text-muted-c" style="font-size: 11px; margin-top: 4px;">
+                                        Минимум 8 символов, буквы и цифры
+                                    </p>
+                                    @error('password')
+                                    <p style="font-size: 11px; color: var(--error); margin-top: 4px;">{{ $message }}</p>
+                                    @enderror
                                 </div>
 
                                 <div>
-                                    <label for="password_confirmation" class="text-secondary-c" style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px;">Подтверждение</label>
-                                    <input type="password" id="password_confirmation" name="password_confirmation" required autocomplete="new-password"
-                                           class="input-field" style="padding: 10px 14px;">
+                                    <label class="text-secondary-c"
+                                           style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px;">
+                                        Подтверждение <span style="font-size: 10px; opacity: 0.7; text-transform: none; letter-spacing: 0;">(повторите новый пароль)</span>
+                                    </label>
+                                    <div style="position: relative;">
+                                        <input type="password" name="password_confirmation" id="conf-pass"
+                                               required autocomplete="new-password"
+                                               class="input-field"
+                                               style="padding: 10px 44px 10px 14px; width: 100%;">
+                                        <button type="button" onclick="togglePassword('conf-pass','eye-conf')"
+                                                style="position:absolute;right:12px;top:50%;transform:translateY(-50%);
+                               background:transparent;border:none;cursor:pointer;
+                               color:var(--text-muted);font-size:16px;padding:4px;line-height:1;"
+                                                tabindex="-1">
+                                            <span id="eye-conf">👁</span>
+                                        </button>
+                                    </div>
                                 </div>
 
-                                <button type="submit" class="btn btn-filled" style="align-self: flex-start;">Изменить пароль</button>
+                                <button type="submit" class="btn btn-filled" style="align-self: flex-start;">
+                                    Изменить пароль
+                                </button>
                             </form>
                         </div>
-                    </div>
                 @endif
             </div>
         </div>

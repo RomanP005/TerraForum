@@ -44,7 +44,6 @@
                                onclick="selectMethod('card')">
                             <input type="radio" name="payment_method" value="card" style="accent-color: var(--brown); width: 18px; height: 18px;" id="method-card">
                             <div style="display: flex; align-items: center; gap: 12px; flex: 1;">
-                                <span style="font-size: 22px;">💳</span>
                                 <div>
                                     <div style="font-size: 14px; font-weight: 500; color: var(--text-primary);">Банковская карта</div>
                                     <div class="text-muted-c" style="font-size: 12px;">Visa, Mastercard, МИР</div>
@@ -57,7 +56,6 @@
                                onclick="selectMethod('sbp')">
                             <input type="radio" name="payment_method" value="sbp" style="accent-color: var(--brown); width: 18px; height: 18px;" id="method-sbp">
                             <div style="display: flex; align-items: center; gap: 12px; flex: 1;">
-                                <span style="font-size: 22px;">📱</span>
                                 <div>
                                     <div style="font-size: 14px; font-weight: 500; color: var(--text-primary);">СБП — Система быстрых платежей</div>
                                     <div class="text-muted-c" style="font-size: 12px;">Мгновенный перевод по номеру телефона</div>
@@ -69,10 +67,9 @@
                                onclick="selectMethod('wallet')">
                             <input type="radio" name="payment_method" value="wallet" style="accent-color: var(--brown); width: 18px; height: 18px;" id="method-wallet">
                             <div style="display: flex; align-items: center; gap: 12px; flex: 1;">
-                                <span style="font-size: 22px;">👛</span>
                                 <div>
                                     <div style="font-size: 14px; font-weight: 500; color: var(--text-primary);">Электронный кошелёк</div>
-                                    <div class="text-muted-c" style="font-size: 12px;">ЮMoney, QIWI</div>
+                                    <div class="text-muted-c" style="font-size: 12px;">ЮMoney</div>
                                 </div>
                             </div>
                         </label>
