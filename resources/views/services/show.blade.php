@@ -18,12 +18,15 @@
             <div class="grid lg:grid-cols-[1fr_300px] gap-10">
                 <article>
                     @if($service->getMedia('photos')->isNotEmpty())
-                        <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-8 reveal">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-bottom: 28px;" class="reveal">
                             @foreach($service->getMedia('photos') as $photo)
-                                <a href="{{ $photo->getUrl() }}" target="_blank">
-                                    <img src="{{ $photo->getUrl() }}" alt=""
-                                         class="w-full aspect-square object-cover rounded-xl hover:opacity-90 transition"
-                                         style="box-shadow: var(--shadow-soft);">
+                                <a href="{{ $photo->getUrl() }}" target="_blank"
+                                   style="display: block; width: 100%; aspect-ratio: 4/3; overflow: hidden; border-radius: 12px; box-shadow: var(--shadow-soft);">
+                                    <img src="{{ $photo->getUrl() }}"
+                                         alt="{{ $service->title }}"
+                                         style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; display: block;"
+                                         onmouseover="this.style.transform='scale(1.05)'"
+                                         onmouseout="this.style.transform='scale(1)'">
                                 </a>
                             @endforeach
                         </div>
@@ -77,6 +80,20 @@
                                     </div>
                                 @endif
                             </a>
+                            @auth
+                                @if(auth()->id() !== $service->user_id)
+                                    <a href="{{ route('payment.show', $service->slug) }}" class="btn btn-filled w-full text-center"
+                                       style="display: block; margin-top: 10px;">
+                                        Оплатить услугу
+                                    </a>
+                                @endif
+                            @else
+                                <button type="button" onclick="openModal('login-modal')"
+                                        class="btn btn-filled w-full text-center"
+                                        style="margin-top: 10px;">
+                                    Войти для оплаты
+                                </button>
+                            @endauth
                             <div>
                                 <a href="{{ route('profile.show', $service->user->name) }}" class="title-link text-base font-medium">
                                     {{ $service->user->name }}
@@ -118,7 +135,6 @@
                                 </button>
                             </div>
                         @endauth
-                        {{-- Контакты --}}
                         @if($service->phone)
                             <div class="py-3 px-4 rounded-lg mb-3" style="background: var(--bg-input); border: 1px solid var(--border-medium);">
                                 <div class="text-xs uppercase tracking-widest text-muted-c mb-1" style="letter-spacing: 2px;">Телефон</div>

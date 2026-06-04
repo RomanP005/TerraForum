@@ -62,12 +62,12 @@ class NewsResource extends Resource
             Select::make('news_category')
                 ->label('Категория')
                 ->options([
-                    'Агрономия' => 'Агрономия',
-                    'Рынок' => 'Рынок',
-                    'Погода' => 'Погода',
+                    'Агрономия'  => 'Агрономия',
+                    'Рынок'      => 'Рынок',
+                    'Погода'     => 'Погода',
                     'Технологии' => 'Технологии',
-                    'События' => 'События',
-                    'Советы' => 'Советы',
+                    'События'    => 'События',
+                    'Советы'     => 'Советы',
                 ])
                 ->searchable(),
 
@@ -79,12 +79,28 @@ class NewsResource extends Resource
             RichEditor::make('content')
                 ->label('Содержание')
                 ->required()
-                ->toolbarButtons([
-                    'bold', 'italic', 'underline',
-                    'h2', 'h3',
-                    'bulletList', 'orderedList',
-                    'blockquote', 'link',
-                ]),
+                ->toolbarButtons(['bold', 'italic', 'underline', 'h2', 'h3', 'bulletList', 'orderedList', 'blockquote', 'link']),
+
+
+            \Filament\Forms\Components\SpatieMediaLibraryFileUpload::make('cover')
+                ->label('Обложка статьи')
+                ->collection('cover')
+                ->image()
+                ->imageEditor()
+                ->maxSize(5120)
+                ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                ->helperText('JPEG / PNG / WebP до 5 МБ'),
+
+            \Filament\Forms\Components\SpatieMediaLibraryFileUpload::make('gallery')
+                ->label('Дополнительные фотографии')
+                ->collection('gallery')
+                ->multiple()
+                ->image()
+                ->maxSize(5120)
+                ->maxFiles(10)
+                ->reorderable()
+                ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                ->helperText('До 10 фото, JPEG / PNG / WebP'),
 
             Toggle::make('is_published')
                 ->label('Опубликовать')

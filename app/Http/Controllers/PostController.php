@@ -6,11 +6,13 @@ use App\Http\Requests\Post\CreatePostRequest;
 use App\Models\Post;
 use App\Models\Theme;
 use App\Notifications\ReplyToTheme;
+use App\Services\ReputationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
+
     public function store(CreatePostRequest $request, string $slug): RedirectResponse
     {
         $theme = Theme::where('slug', $slug)->firstOrFail();
@@ -53,6 +55,9 @@ class PostController extends Controller
         $value = request('value');
 
         abort_unless(in_array($value, ['up', 'down']), 400);
+        abort_if($post->user_id === $user->id, 403, 'Нельзя голосовать за свои ответы');
+
+        $author = $post->user;
 
         $existingVote = DB::table('votes')
             ->where('user_id', $user->id)
@@ -61,22 +66,29 @@ class PostController extends Controller
             ->first();
 
         if ($existingVote) {
-            $isSameVote = ($existingVote->votes === 1 && $value === 'up')
+            $isSameVote = ($existingVote->votes === 1  && $value === 'up')
                 || ($existingVote->votes === -1 && $value === 'down');
 
             if ($isSameVote) {
-                // Тот же голос — удаляем запись, возврат к 0
                 DB::table('votes')
                     ->where('user_id', $user->id)
                     ->where('votable_id', $post->id)
                     ->where('votable_type', get_class($post))
                     ->delete();
 
+                $action = $existingVote->votes === 1
+                    ? 'vote_up_cancelled'
+                    : 'vote_down_cancelled';
+                ReputationService::updateForVote($author, $action);
+
                 return back();
             }
         }
 
         $value === 'up' ? $user->upvote($post) : $user->downvote($post);
+
+        $action = $value === 'up' ? 'vote_up_received' : 'vote_down_received';
+        ReputationService::updateForVote($author, $action);
 
         return back();
     }
@@ -91,12 +103,18 @@ class PostController extends Controller
             403
         );
 
-        $theme->posts()
-            ->where('is_best_answer', true)
-            ->update(['is_best_answer' => false]);
+        $oldBest = $theme->posts()->where('is_best_answer', true)->first();
+        if ($oldBest && $oldBest->id !== $post->id) {
+            $oldBest->user->decrement('rating', ReputationService::POINTS['best_answer']);
+            if ($oldBest->user->rating < 0) {
+                $oldBest->user->update(['rating' => 0]);
+            }
+        }
 
-        // Отметить новый
+        $theme->posts()->where('is_best_answer', true)->update(['is_best_answer' => false]);
         $post->update(['is_best_answer' => true]);
+
+        ReputationService::updateForVote($post->user, 'best_answer');
 
         return back()->with('success', 'Лучший ответ отмечен');
     }
