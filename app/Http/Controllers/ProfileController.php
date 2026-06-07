@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -148,5 +149,13 @@ class ProfileController extends Controller
 
         return redirect()->route('profile.show', Auth::user()->name)
             ->with('success', 'Пароль изменён');
+    }
+    public function sendPasswordLink(): \Illuminate\Http\RedirectResponse
+    {
+        $status = Password::sendResetLink(
+            ['email' => auth()->user()->email]
+        );
+
+        return back()->with('password_link_sent', true);
     }
 }

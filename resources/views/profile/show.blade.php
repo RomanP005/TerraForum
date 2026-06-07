@@ -226,82 +226,25 @@
                         <div class="card-flat" style="padding: 24px;">
                             <div class="divider" style="margin-bottom: 24px;"><span>безопасность</span></div>
 
-                            <form action="{{ route('profile.password.update') }}" method="POST"
-                                  style="display: flex; flex-direction: column; gap: 16px;">
+                            @if(session('password_link_sent'))
+                                <div style="padding: 14px 16px; border-radius: 10px;
+                    background: rgba(107,138,92,0.12);
+                    border-left: 3px solid var(--success);
+                    margin-bottom: 20px; font-size: 14px;">
+                                    ✓ Ссылка для смены пароля отправлена на <strong>{{ auth()->user()->email }}</strong>.
+                                    Проверьте почту.
+                                </div>
+                            @endif
+
+                            <p class="text-secondary-c" style="font-size: 14px; margin-bottom: 20px; line-height: 1.6;">
+                                Для смены пароля мы отправим ссылку на ваш email:
+                                <strong>{{ auth()->user()->email }}</strong>
+                            </p>
+
+                            <form action="{{ route('profile.password.send-link') }}" method="POST">
                                 @csrf
-                                @method('PATCH')
-
-                                <div>
-                                    <label class="text-secondary-c"
-                                           style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px;">
-                                        Текущий пароль
-                                    </label>
-                                    <div style="position: relative;">
-                                        <input type="password" name="current_password" id="cur-pass"
-                                               required autocomplete="current-password"
-                                               class="input-field @error('current_password') error @enderror"
-                                               style="padding: 10px 44px 10px 14px; width: 100%;">
-                                        <button type="button" onclick="togglePassword('cur-pass','eye-cur')"
-                                                style="position:absolute;right:12px;top:50%;transform:translateY(-50%);
-                               background:transparent;border:none;cursor:pointer;
-                               color:var(--text-muted);font-size:16px;padding:4px;line-height:1;"
-                                                tabindex="-1">
-                                            <span id="eye-cur">👁</span>
-                                        </button>
-                                    </div>
-                                    @error('current_password')
-                                    <p style="font-size: 11px; color: var(--error); margin-top: 4px;">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                <div>
-                                    <label class="text-secondary-c"
-                                           style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px;">
-                                        Новый пароль
-                                    </label>
-                                    <div style="position: relative;">
-                                        <input type="password" name="password" id="new-pass"
-                                               required autocomplete="new-password"
-                                               class="input-field @error('password') error @enderror"
-                                               style="padding: 10px 44px 10px 14px; width: 100%;">
-                                        <button type="button" onclick="togglePassword('new-pass','eye-new')"
-                                                style="position:absolute;right:12px;top:50%;transform:translateY(-50%);
-                               background:transparent;border:none;cursor:pointer;
-                               color:var(--text-muted);font-size:16px;padding:4px;line-height:1;"
-                                                tabindex="-1">
-                                            <span id="eye-new">👁</span>
-                                        </button>
-                                    </div>
-                                    <p class="text-muted-c" style="font-size: 11px; margin-top: 4px;">
-                                        Минимум 8 символов, буквы и цифры
-                                    </p>
-                                    @error('password')
-                                    <p style="font-size: 11px; color: var(--error); margin-top: 4px;">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                <div>
-                                    <label class="text-secondary-c"
-                                           style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px;">
-                                        Подтверждение <span style="font-size: 10px; opacity: 0.7; text-transform: none; letter-spacing: 0;">(повторите новый пароль)</span>
-                                    </label>
-                                    <div style="position: relative;">
-                                        <input type="password" name="password_confirmation" id="conf-pass"
-                                               required autocomplete="new-password"
-                                               class="input-field"
-                                               style="padding: 10px 44px 10px 14px; width: 100%;">
-                                        <button type="button" onclick="togglePassword('conf-pass','eye-conf')"
-                                                style="position:absolute;right:12px;top:50%;transform:translateY(-50%);
-                               background:transparent;border:none;cursor:pointer;
-                               color:var(--text-muted);font-size:16px;padding:4px;line-height:1;"
-                                                tabindex="-1">
-                                            <span id="eye-conf">👁</span>
-                                        </button>
-                                    </div>
-                                </div>
-
                                 <button type="submit" class="btn btn-filled" style="align-self: flex-start;">
-                                    Изменить пароль
+                                    Отправить ссылку для смены пароля
                                 </button>
                             </form>
                         </div>

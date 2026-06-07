@@ -51,7 +51,6 @@
                             </div>
                         </label>
 
-                        {{-- СБП --}}
                         <label style="display: flex; align-items: center; gap: 14px; padding: 16px; border-radius: 12px; border: 2px solid var(--border-medium); cursor: pointer; transition: all 0.2s;" id="label-sbp"
                                onclick="selectMethod('sbp')">
                             <input type="radio" name="payment_method" value="sbp" style="accent-color: var(--brown); width: 18px; height: 18px;" id="method-sbp">

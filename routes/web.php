@@ -80,6 +80,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/notifications/read-all', [NotificationController::class, 'readAll'])->name('notifications.read-all');
     Route::delete('/notifications/{id}', [NotificationController::class, 'destroy'])->name('notifications.destroy');
 
+    Route::post('/profile/password/send-link', [ProfileController::class, 'sendPasswordLink'])->name('profile.password.send-link');
+
 });
 
 Route::middleware(['auth', 'role:admin|moderator'])->group(function () {

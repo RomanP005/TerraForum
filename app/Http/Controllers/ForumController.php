@@ -51,7 +51,7 @@ class ForumController extends Controller
         $sort  = $request->input('sort', 'latest');
         $query = match ($sort) {
             'popular' => $query->popular(),
-            'active'  => $query->mostActive(),
+            'active' => $query->where('is_closed', false)->mostActive(),
             default   => $query->latest(),
         };
 
