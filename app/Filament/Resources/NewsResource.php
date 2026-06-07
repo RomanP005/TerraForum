@@ -20,6 +20,8 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Auth;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
+
 
 class NewsResource extends Resource
 {
@@ -82,7 +84,7 @@ class NewsResource extends Resource
                 ->toolbarButtons(['bold', 'italic', 'underline', 'h2', 'h3', 'bulletList', 'orderedList', 'blockquote', 'link']),
 
 
-            \Filament\Forms\Components\SpatieMediaLibraryFileUpload::make('cover')
+            SpatieMediaLibraryFileUpload::make('cover')
                 ->label('Обложка статьи')
                 ->collection('cover')
                 ->image()
@@ -91,7 +93,7 @@ class NewsResource extends Resource
                 ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
                 ->helperText('JPEG / PNG / WebP до 5 МБ'),
 
-            \Filament\Forms\Components\SpatieMediaLibraryFileUpload::make('gallery')
+            SpatieMediaLibraryFileUpload::make('gallery')
                 ->label('Дополнительные фотографии')
                 ->collection('gallery')
                 ->multiple()
