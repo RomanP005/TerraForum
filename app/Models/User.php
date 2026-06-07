@@ -13,10 +13,11 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Image\Enums\Fit;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 
 
-
-class User extends Authenticatable implements HasMedia
+class User extends Authenticatable implements HasMedia, FilamentUser
 {
     use HasFactory,
         Notifiable,
@@ -76,6 +77,10 @@ class User extends Authenticatable implements HasMedia
             ->fit(Fit::Crop, 200, 200)
             ->performOnCollections('avatar');
     }
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return true;
+    }
 
 
     public function getAvatarUrlAttribute(): string
@@ -83,20 +88,17 @@ class User extends Authenticatable implements HasMedia
         return $this->getFirstMediaUrl('avatar', 'thumb')
             ?: 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&background=4d7c0f&color=fff';
     }
-
-    // Темы форума
+    
     public function themes()
     {
         return $this->hasMany(\App\Models\Theme::class);
     }
 
-// Сообщения (ответы)
     public function posts()
     {
         return $this->hasMany(\App\Models\Post::class);
     }
 
-// Услуги
     public function services()
     {
         return $this->hasMany(\App\Models\Service::class);
