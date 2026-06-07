@@ -33,7 +33,7 @@ class CategoryResource extends Resource
 
     public static function canAccess(): bool
     {
-        return auth()->user()?->hasRole('admin') ?? false;
+        return auth('admin')->user()?->hasRole('admin') ?? false;
     }
 
     public static function form(Schema $schema): Schema

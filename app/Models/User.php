@@ -88,7 +88,7 @@ class User extends Authenticatable implements HasMedia, FilamentUser
         return $this->getFirstMediaUrl('avatar', 'thumb')
             ?: 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&background=4d7c0f&color=fff';
     }
-    
+
     public function themes()
     {
         return $this->hasMany(\App\Models\Theme::class);
