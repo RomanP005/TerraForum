@@ -23,12 +23,18 @@ class ForumController extends Controller
             ->withTotalVotes();
 
         if ($search = $request->input('q')) {
-            $foundIds = Theme::search($search)->keys();
+            
+            if (str_starts_with(trim($search), '#')) {
+                $tagName = ltrim(trim($search), '#');
+                $query->withAnyTags([$tagName]);
 
-            if ($foundIds->isNotEmpty()) {
-                $query->whereIn('id', $foundIds);
             } else {
-                $query->whereRaw('1 = 0');
+                $foundIds = Theme::search($search)->keys();
+                if ($foundIds->isNotEmpty()) {
+                    $query->whereIn('id', $foundIds);
+                } else {
+                    $query->whereRaw('1 = 0');
+                }
             }
         }
 
