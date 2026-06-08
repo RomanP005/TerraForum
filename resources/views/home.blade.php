@@ -103,7 +103,7 @@
                 <div class="order-1 md:order-2 reveal reveal-delay-1">
 
                     <a href="#" style="display:block; border-radius:16px; overflow:hidden; box-shadow:var(--shadow-hover);">
-                        <img src="{{ asset('public/images/19.png') }}" alt="О нас"
+                        <img src="{{ asset('images/19.png') }}" alt="О нас"
                              style="width:100%; aspect-ratio:4/3; object-fit:cover; display:block; transition:transform 0.4s;"
                              onmouseover="this.style.transform='scale(1.03)'"
                              onmouseout="this.style.transform='scale(1)'">
@@ -118,7 +118,7 @@
             <div class="grid md:grid-cols-2 gap-12 items-center">
                 <div class="reveal">
                     <a href="#" style="display:block; border-radius:16px; overflow:hidden; box-shadow:var(--shadow-hover);">
-                        <img src="{{ asset('public/images/5.png') }}" alt="Миссия"
+                        <img src="{{ asset('images/5.png') }}" alt="Миссия"
                              style="width:100%; aspect-ratio:4/3; object-fit:cover; display:block; transition:transform 0.4s;"
                              onmouseover="this.style.transform='scale(1.03)'"
                              onmouseout="this.style.transform='scale(1)'">
@@ -128,7 +128,7 @@
                     <div class="section-number mb-4">— 02 наша миссия —</div>
                     <h2 class="text-4xl md:text-5xl mb-6" style="line-height:1.2;">Знания,<br>проверенные временем</h2>
                     <p class="text-base mb-4 leading-relaxed text-secondary-c">Здесь делятся опытом, который не найти в инструкциях. Соседская мудрость о том, когда сажать томаты, как подрезать яблоню.</p>
-                    <p class="text-base leading-relaxed text-secondary-c">Каждый совет проходит через коллективный фильтр доверия — система рейтингов показывает, какие ответы действительно работают.</p>
+                    <p class="text-base leading-relaxed text-secondary-c">Каждый совет проходит через коллективный фильтр доверия - система рейтингов показывает, какие ответы действительно работают.</p>
                 </div>
             </div>
         </div>
@@ -157,7 +157,7 @@
 
                 <a href="#"
                    style="display:block; border-radius:12px; overflow:hidden; box-shadow:var(--shadow-soft);">
-                    <img src="{{ asset('public/images/1.png') }}" alt="Галерея 1"
+                    <img src="{{ asset('images/1.png') }}" alt="Галерея 1"
                          style="width:100%; aspect-ratio:1/1; object-fit:cover; display:block; transition:transform 0.4s;"
                          onmouseover="this.style.transform='scale(1.05)'"
                          onmouseout="this.style.transform='scale(1)'">
@@ -165,7 +165,7 @@
 
                 <a href="#"
                    style="display:block; border-radius:12px; overflow:hidden; box-shadow:var(--shadow-soft);">
-                    <img src="{{ asset('public/images/2.png') }}" alt="Галерея 2"
+                    <img src="{{ asset('images/2.png') }}" alt="Галерея 2"
                          style="width:100%; aspect-ratio:1/1; object-fit:cover; display:block; transition:transform 0.4s;"
                          onmouseover="this.style.transform='scale(1.05)'"
                          onmouseout="this.style.transform='scale(1)'">
@@ -173,7 +173,7 @@
 
                 <a href="#"
                    style="display:block; border-radius:12px; overflow:hidden; box-shadow:var(--shadow-soft);">
-                    <img src="{{ asset('public/images/13.png') }}" alt="Галерея 3"
+                    <img src="{{ asset('images/13.png') }}" alt="Галерея 3"
                          style="width:100%; aspect-ratio:1/1; object-fit:cover; display:block; transition:transform 0.4s;"
                          onmouseover="this.style.transform='scale(1.05)'"
                          onmouseout="this.style.transform='scale(1)'">
@@ -181,7 +181,7 @@
 
                 <a href="#"
                    style="display:block; border-radius:12px; overflow:hidden; box-shadow:var(--shadow-soft);">
-                    <img src="{{ asset('public/images/4.png') }}" alt="Галерея 4"
+                    <img src="{{ asset('images/4.png') }}" alt="Галерея 4"
                          style="width:100%; aspect-ratio:1/1; object-fit:cover; display:block; transition:transform 0.4s;"
                          onmouseover="this.style.transform='scale(1.05)'"
                          onmouseout="this.style.transform='scale(1)'">
@@ -190,7 +190,7 @@
             </div>
         </div>
     </section>
-    
+
     <section class="py-24 px-6"
              style="background:linear-gradient(135deg, var(--forest), var(--forest-dark)); color:#f5efe0;">
         <div class="workspace text-center reveal">
