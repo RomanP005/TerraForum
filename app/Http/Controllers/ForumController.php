@@ -23,7 +23,7 @@ class ForumController extends Controller
             ->withTotalVotes();
 
         if ($search = $request->input('q')) {
-            
+
             if (str_starts_with(trim($search), '#')) {
                 $tagName = ltrim(trim($search), '#');
                 $query->withAnyTags([$tagName]);
